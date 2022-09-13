@@ -1,0 +1,7 @@
+.vagrant
+
+*.bak
+
+examples/
+MyVars.sh
+vagrantfile.old
