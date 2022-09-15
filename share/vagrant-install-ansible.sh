@@ -1,12 +1,13 @@
 #!/bin/sh
-[ -f /vagrant/MyVars.sh ] && source /vagrant/MyVars.sh
 
 #crontab weer leeg maken
 sudo echo "" >> crontab_new
 sudo crontab crontab_new
 rm crontab_new
 
-source /etc/os-release
+#source commando werkt niet op Debian, dit wel
+[ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
+. /etc/os-release
 case "$ID" in
     "rocky")
       sudo yum update -y
