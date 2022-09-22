@@ -19,5 +19,5 @@ case $HOSTNAME in
   ;;
   *)
     echo Hostname not defined, cant set the bridged networkcard automatic
-	;;
+  ;;
 esac

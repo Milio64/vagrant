@@ -12,13 +12,13 @@ case $HOSTNAME in
   Emile-SPX)
     basedir=/drives/c/werk/github
   ;;
+  *)
+    basedir=/c/werk/github
 esac
-defaultprojectname=salt
 
 #define variable in external file
 #########################################################################################
 #########################################################################################
-
 if [ -f $basedir/vagrant/$1.sh ]
   then
     source $basedir/vagrant/$1.sh
@@ -35,18 +35,14 @@ if [ ! -d $projectdir ] ;
     mkdir $projectdir $projectdir/srv
     cp $basedir/vagrant/.gitignore $projectdir/.gitignore
     cp -r $basedir/vagrant/share $projectdir/share
- 
-    #remove the other project file 
-    
-    # find folder/ -mindepth 1 -not -path folder/d -delete
-    
-    #rm $projectdir/share/vagrant-install-*.sh
-    #if [ -f $$basedir/vagrant/share/vagrant-install-$projectname.sh ]
-    #  then 
-    #    cp $basedir/vagrant/share/vagrant-install-$projectname.sh $projectdir/share/vagrant-install-$projectname.sh
-    #  else
-    #    cp $basedir/vagrant/share/vagrant-install-.sh $projectdir/share/vagrant-install-$projectname.sh
-    #fi
+
+    #onnodige config file weghalen uit project directory
+    rm -f $basedir/vagrant/share/vagrant-install-*.sh
+    if [ -f $basedir/vagrant/share/vagrant-install-$projectname.sh ] then
+        cp $basedir/vagrant/share/vagrant-install-$projectname.sh $projectdir/share
+      else
+        cp $basedir/vagrant/share/vagrant-install-.sh $projectdir/share
+    fi
 fi
 
 #version control vagrantfile
@@ -69,14 +65,10 @@ case $HOSTNAME in
   Emile-SPX)
     networkcard="Dell Wireless 1820A 802.11ac"
     sed -i 's/networkcard/Dell Wireless 1820A 802.11ac/g' $projectdir/vagrantfile
-   
-    #execption from the defaults if needed.
-    #vm_ipnr=( 192.168.178.30 192.168.178.31 192.168.178.32 )
-    #vm_mem=( 2048 512 512 )
   ;;
   *)
     echo Hostname not defined, cant set the bridged networkcard automatic
-	;;
+  ;;
 esac
 #########################################################################################
 #########################################################################################
