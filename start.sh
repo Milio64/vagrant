@@ -1,13 +1,19 @@
 
 #Check parameter is given
-if [ -v 1 ]; then echo Set; else echo Not set && exit; fi
+#if [ -v 1 ]; then echo Set; else echo Not set && exit; fi
 
 #define variable
 #########################################################################################
 #########################################################################################
-basedir=/c/werk/github
+case $HOSTNAME in
+  EmileWerkkamer)
+    basedir=/c/werk/github
+  ;;
+  Emile-SPX)
+    basedir=/drives/c/werk/github
+  ;;
+esac
 defaultprojectname=salt
-
 
 #define variable in external file
 #########################################################################################
