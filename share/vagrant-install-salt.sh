@@ -1,16 +1,19 @@
 #!/bin/sh
-source /vagrant/MyVars.sh
+#if exist then exit because Virtual machine is started before, no installation steps
+sudo [ -f /root/vagrant-secondfase.started ] && exit 0
+echo "Init done" > /root/vagrant-secondfase.started
+
+#variable init
 master_ip=$salt
+#source commando doesn work on Debian, this does
+[ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
+. /etc/os-release
 
 #crontab weer leeg maken
 sudo echo "" >> crontab_new
 sudo crontab crontab_new
 rm crontab_new
 
-#init heeft al keer gedraaid niet 2de x starten
-sudo [ -e /etc/salt/minion.d/local.conf ] && exit 0
-
-source /etc/os-release
 case "$ID_LIKE" in
     "rhel centos fedora")
     sudo rpm --import https://repo.saltproject.io/py3/redhat/8/x86_64/latest/SALTSTACK-GPG-KEY.pub
@@ -108,3 +111,4 @@ case $HOSTNAME in
   ;;
 esac
 
+echo "Init done" > /root/vagrant-secondfase.done

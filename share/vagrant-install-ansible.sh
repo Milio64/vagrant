@@ -1,17 +1,18 @@
 #!/bin/sh
 
 #if exist then exit because Virtual machine is started before, no installation steps
-sudo [ -f /root/.bash_history ] && exit 0
+sudo [ -f /root/vagrant-secondfase.started ] && exit 0
+echo "Init done" > /root/vagrant-secondfase.started
+
+#variable init
+#source commando doesn work on Debian, this does
+[ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
+. /etc/os-release
 
 #crontab weer leeg maken
 sudo echo "" >> crontab_new
 sudo crontab crontab_new
 rm crontab_new
-
-#source commando werkt niet op Debian, dit wel
-[ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
-. /etc/os-release
-
 
 case "$ID" in
     "rocky")
@@ -84,3 +85,4 @@ sudo ansible-pull -U https://github.com/Milio64/setup.git
 #sudo firewall-cmd --permanent --zone=public --add-port=XXXXX/tcp
 #sudo systemctl reload firewalld
 
+echo "Init done" > /root/vagrant-secondfase.done
