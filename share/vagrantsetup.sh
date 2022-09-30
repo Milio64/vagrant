@@ -13,7 +13,8 @@ sudo sed -i '/root/c\root:$6$PjVXvGHBfjAom0fs$01tRho2BPeCF4J4AJUwqrUYf93ofyijdkD
 timedatectl set-timezone Europe/Amsterdam
 
 source /etc/os-release
-#Keep this so empty as posible, booting will show the the command here, but vagrant will wait before start next VM
+#Keep this so empty as posible!
+#if system boot vagrant init will wait before start next VM
 case "$ID" in
     "opensuse-leap")
       sudo zypper refresh
@@ -22,10 +23,10 @@ case "$ID" in
     ;;
     "rocky")
       sleep 30
-      #else is crontab not available
+      #sleep a little else crontab is not available
     ;;
     "debian")
-    
+      #not yet fully tested
     ;;
     *)
     ;;

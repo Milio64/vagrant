@@ -1,5 +1,8 @@
 #!/bin/sh
 
+#if exist then exit because Virtual machine is started before, no installation steps
+sudo [ -f /root/.bash_history ] && exit 0
+
 #crontab weer leeg maken
 sudo echo "" >> crontab_new
 sudo crontab crontab_new
@@ -8,6 +11,8 @@ rm crontab_new
 #source commando werkt niet op Debian, dit wel
 [ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
 . /etc/os-release
+
+
 case "$ID" in
     "rocky")
       sudo yum update -y
@@ -68,26 +73,6 @@ case "$ID" in
       #exit 1
     ;;
 esac
-
-#Eventueel te wijzigen configuratie opties
-case $HOSTNAME in
-  "master")
-    case "$ID_LIKE" in
-      "rhel centos fedora") #Rocky linux installatie commando's
-      ;;
-      "suse opensuse") #OpenSuse installatie commando's
-      ;;
-      *)
-        echo "OS Niet gedefineerd"
-        #exit 1
-      ;;
-    esac
-  ;;  
-  *)
-   #nothing 
-  ;; 
-esac
-
 
 #I use Ansible pull so client keep thereself up-to-date
 #start first ansible run, that also implements crontab entry 

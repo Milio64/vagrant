@@ -12,8 +12,12 @@ case $HOSTNAME in
   Emile-SPX)
     basedir=/drives/c/werk/github
   ;;
+  Emile-Lenovo)
+    basedir=/drives/c/werk/github
+  ;;
   *)
-    basedir=/c/werk/github
+    basedir=/drives/c/werk/github
+  ;;
 esac
 
 #define variable in external file
@@ -23,22 +27,32 @@ if [ -f $basedir/vagrant/$1.sh ]
   then
     source $basedir/vagrant/$1.sh
   else
-    echo "file '$basedir/vagrant/$1.sh' not found, exit"
+    echo "file '$basedir/vagrant/$1.sh' bestaat niet"
+    echo "maak deze aan met juiste parameter en start opnieuw"
+    echo "exit"
     exit 1
 fi
 
 projectdir=$basedir/$projectname
 
 #new projectdir
-if [ ! -d $projectdir ] ; 
+if [ -d $projectdir ] ; 
   then
+    #Update install file in vagrant directory
+    [ -f $projectdir/share/vagrant-install-$projectname.sh ] && cp $projectdir/share/vagrant-install-$projectname.sh $basedir/vagrant/share/
+    #make sure host variables are available on VM
+    [ -f $projectdir/share/MyVars.sh ] && rm $projectdir/share/MyVars.sh
+  else
+    #Make directory's and supporting files
     mkdir $projectdir $projectdir/srv
     cp $basedir/vagrant/.gitignore $projectdir/.gitignore
     cp -r $basedir/vagrant/share $projectdir/share
 
-    #onnodige config file weghalen uit project directory
-    rm -f $basedir/vagrant/share/vagrant-install-*.sh
-    if [ -f $basedir/vagrant/share/vagrant-install-$projectname.sh ] then
+
+    #remove unneeded config file from project directory
+    rm -f $projectdir/share/vagrant-install-*.sh
+    if [ -f $basedir/vagrant/share/vagrant-install-$projectname.sh ] ;
+      then
         cp $basedir/vagrant/share/vagrant-install-$projectname.sh $projectdir/share
       else
         cp $basedir/vagrant/share/vagrant-install-.sh $projectdir/share
@@ -66,14 +80,19 @@ case $HOSTNAME in
     networkcard="Dell Wireless 1820A 802.11ac"
     sed -i 's/networkcard/Dell Wireless 1820A 802.11ac/g' $projectdir/vagrantfile
   ;;
+  Emile-Lenovo)
+    networkcard="Realtek RTL8723BE Wireless LAN 802.11n PCI-E NIC"
+    networkcard="Realtek PCIe GBE Family Controller"
+    #nog check maken welke netwerk kaart actief is!
+    #voor nu alleen wifi card
+    sed -i 's/networkcard/Realtek RTL8723BE Wireless LAN 802.11n PCI-E NIC/g' $projectdir/vagrantfile
+  ;;
   *)
     echo Hostname not defined, cant set the bridged networkcard automatic
   ;;
 esac
 #########################################################################################
 #########################################################################################
-#make sure host variables are available on VM
-[ -f $projectdir/share/MyVars.sh ] && rm $projectdir/share/MyVars.sh
 
 #change keywords in vagrantfile
 declare -i i=0
@@ -92,8 +111,7 @@ done
 sed -i 's/projectname/'$projectname'/g'     $projectdir/vagrantfile
 
 pwd=$(pwd)
-
-if [ "$pwd" = "$projectdir" ];
+if [ "$pwd" = "$projectdir" ] ;
   then
     vagrant up
   else
