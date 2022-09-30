@@ -94,6 +94,7 @@ esac
 #########################################################################################
 #########################################################################################
 
+
 #change keywords in vagrantfile
 declare -i i=0
 for (( x=0; x<$vm_number; x++))
@@ -107,6 +108,9 @@ do
   
   echo ${vm_name[$x]}=${vm_ipnr[$x]} >>     $projectdir/share/MyVars.sh
 done
+echo "vm_number=${vm_number}"          >>     $projectdir/share/MyVars.sh
+echo "vm_name=( ${vm_name[@]} )"              >>     $projectdir/share/MyVars.sh
+echo "vm_ipnr=( ${vm_ipnr[@]} )"              >>     $projectdir/share/MyVars.sh
 
 sed -i 's/projectname/'$projectname'/g'     $projectdir/vagrantfile
 

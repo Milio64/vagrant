@@ -19,7 +19,7 @@ case "$ID" in
     "opensuse-leap")
       sudo zypper refresh
       sudo zypper install -y cron vi vim
-      sudo systemctl start cron && systemclt enable cron
+      sudo systemctl start cron && systemctl enable cron
     ;;
     "rocky")
       sleep 30

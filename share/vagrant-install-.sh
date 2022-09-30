@@ -9,11 +9,16 @@ echo "Init done" > /root/vagrant-secondfase.started
 [ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
 . /etc/os-release
 
-
 #crontab weer leeg maken
 sudo echo "" >> crontab_new
 sudo crontab crontab_new
 rm crontab_new
+
+#register VM's in hosts file
+for (( x=0; x<$vm_number; x++))
+do
+  echo ${vm_ipnr[$x]}   ${vm_name[$x]}.localdomain  >> /etc/hosts
+done
 
 #Start initial installation steps
 #set history back for saved $project dir, easy recap commands
