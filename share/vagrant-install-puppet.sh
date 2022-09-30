@@ -14,12 +14,15 @@ sudo echo "" >> crontab_new
 sudo crontab crontab_new
 rm crontab_new
 
+#register VM in hosts file
+for (( x=0; x<$vm_number; x++))
+do
+  echo ${vm_ipnr[$x]}   ${vm_name[$x]}.localdomain  >> /etc/hosts
+done
 
 #Start initial installation steps
 #set history back for saved $project dir, easy recap commands
 cp /vagrant/root/.bash_history /root/.bash_history
-
-
 
 case "$ID" in
     "rocky")
@@ -27,7 +30,6 @@ case "$ID" in
       if [[ $HOSTNAME == puppet ]] ;
         then
           sudo yum -y install puppetserver
-          sudo systemctl start puppetserver && sudo systemctl enable puppetserver
           #sudo yum install puppet-agent
         else
           sudo yum install puppet-agent
@@ -39,7 +41,6 @@ case "$ID" in
       if [[ $HOSTNAME == puppet ]] ;
         then
           sudo zypper install -y install puppetserver
-          sudo systemctl start puppetserver && sudo systemctl enable puppetserver
           #sudo zypper install puppet-agent
         else
           sudo zypper install puppet-agent
@@ -54,7 +55,6 @@ case "$ID" in
       if [[ $HOSTNAME == puppet ]] ;
         then
           apt-get install puppetserver
-          sudo systemctl start puppetserver && sudo systemctl enable puppetserver
           #sudo apt-get install puppet-agent
         else
           sudo apt-get install puppet-agent
@@ -71,21 +71,20 @@ esac
 export PATH=/opt/puppetlabs/bin:$PATH
 puppet config set server $puppet --section main
 
-#register VM in hosts file
-for (( x=0; x<$vm_number; x++))
-do
-  echo ${vm_ipnr[$x]}   ${vm_name[$x]} >> /etc/hosts
-done
-
-puppet ssl bootstrap
-
 if [[ $HOSTNAME == puppet ]] ;
   then
     for (( x=0; x<$vm_number; x++))
     do
+      sudo systemctl start puppetserver
+      sudo systemctl enable puppetserver
+
       sudo puppetserver ca sign --certname ${vm_name[$x]}
     done
+  else
+    #first time, generate ssl cert for puppet agent
+    puppet ssl bootstrap
 fi
+
 
 #second time to accept signed cert
 #puppet ssl bootstrap
