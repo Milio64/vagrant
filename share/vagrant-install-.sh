@@ -22,8 +22,9 @@ done
 
 #Start initial installation steps
 #set history back for saved $project dir, easy recap commands
-sudo [ ! -f /root/.bash_history ] cp /vagrant/root/.bash_history /root/.bash_history
+sudo [ ! -f /root/.bash_history ] && [ -f /vagrant/root/.bash_history-$projectname ] && cp /vagrant/root/.bash_history-$projectname /root/.bash_history
 
+ 
 case "$ID" in
     "rocky")
       sudo yum update -y

@@ -22,7 +22,7 @@ done
 
 #Start initial installation steps
 #set history back for saved $project dir, easy recap commands
-cp /vagrant/root/.bash_history /root/.bash_history
+sudo [ ! -f /root/.bash_history ] && [ -f /vagrant/root/.bash_history-$projectname ] && cp /vagrant/root/.bash_history-$projectname /root/.bash_history
 
 case "$ID" in
     "rocky")
@@ -32,7 +32,7 @@ case "$ID" in
           sudo yum -y install puppetserver
           #sudo yum install puppet-agent
         else
-          sudo yum install puppet-agent
+          sudo yum -y install puppet-agent
       fi
       sudo yum update -y
     ;;
@@ -43,21 +43,27 @@ case "$ID" in
           sudo zypper install -y install puppetserver
           #sudo zypper install puppet-agent
         else
-          sudo zypper install puppet-agent
+          #tested deze combinatie werkt niet
+          #zou geinstalleerd moeten zijn in: /opt/puppetlabs/puppet/bin
+          ####################################################################
+          ####################################################################
+          sudo zypper install -y puppet-agent
       fi
       sudo zypper refresh
       sudo zypper update -y
     ;;
     "debian")
       #not yet tested
+      ####################################################################
+      ####################################################################
       wget https://apt.puppet.com/puppet7-release-focal.deb
       sudo dpkg -i puppet7-release-focal.deb
       if [[ $HOSTNAME == puppet ]] ;
         then
-          apt-get install puppetserver
+          apt-get install -y puppetserver
           #sudo apt-get install puppet-agent
         else
-          sudo apt-get install puppet-agent
+          sudo apt-get install -y puppet-agent
       fi
       sudo apt-get update
     ;;   

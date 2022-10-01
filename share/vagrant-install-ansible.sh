@@ -14,6 +14,16 @@ sudo echo "" >> crontab_new
 sudo crontab crontab_new
 rm crontab_new
 
+#register VM's in hosts file
+for (( x=0; x<$vm_number; x++))
+do
+  echo ${vm_ipnr[$x]}   ${vm_name[$x]}.localdomain  >> /etc/hosts
+done
+
+#Start initial installation steps
+#set history back for saved $project dir, easy recap commands
+sudo [ ! -f /root/.bash_history ] && [ -f /vagrant/root/.bash_history-$projectname ] && cp /vagrant/root/.bash_history-$projectname /root/.bash_history
+
 case "$ID" in
     "rocky")
       sudo yum update -y
