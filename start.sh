@@ -139,3 +139,4 @@ if [ "$pwd" = "$projectdir" ] ;
     echo "'vagrant up' to start the test environment"
     cmd
 fi
+

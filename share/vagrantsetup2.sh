@@ -66,5 +66,5 @@ if [ -f /vagrant/message.log ] ;
   then
     wall -n /vagrant/message.log
     cat /vagrant/message.log >> /root/setup.log
-    rm /vagrant/message.log
+    #rm /vagrant/message.log
 fi
