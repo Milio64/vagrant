@@ -31,18 +31,8 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  config.vm.define "vm_name3" do |node|
-    node.vm.box =  "vm_type3"
-    node.vm.hostname = "vm_name3"
-    node.vm.network "public_network", bridge: "networkcard", ip: "vm_ipnr3"
-    node.vm.provider "virtualbox" do |vmvbox|
-      vmvbox.memory = "vm_mem3"
-      vmvbox.cpus = vm_cpu3
-    end
-  end
-
   #https://www.vagrantup.com/docs/synced-folders/basic_usage
-  config.vm.synced_folder "./share", "/vagrant/", enable: true
+  config.vm.synced_folder "./vagrant", "/vagrant/", enable: true
   config.vm.provision "shell", inline: <<-SHELL
     #parameter bij aanroep is script dat product X installeert
     sudo sh /vagrant/vagrantsetup1.sh projectname

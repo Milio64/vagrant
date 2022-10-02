@@ -1,0 +1,50 @@
+#Vagrant boxes om te installeren
+#https://app.vagrantup.com/boxes/search
+
+#Als ik proxmox server ga gebruiken als host.
+#https://github.com/telcat/vagrant-proxmox
+
+Vagrant.configure("2") do |config|
+  config.vm.define "vm_name1" do |node|
+    node.vm.box =  "vm_type1"
+    node.vm.hostname = "vm_name1"
+    node.vm.network "public_network", bridge: "networkcard", ip: "vm_ipnr1"
+    node.vm.provider "virtualbox" do |vmvbox|
+      vmvbox.memory = "vm_mem1"
+      vmvbox.cpus = vm_cpu1
+    end
+
+    #https://www.vagrantup.com/docs/synced-folders/basic_usage  
+    config.vm.synced_folder "./srv/", "/srv/",
+      enable: true,
+      owner: "root",
+      group: "root"
+  end
+
+  config.vm.define "vm_name2" do |node|
+    node.vm.box =  "vm_type2"
+    node.vm.hostname = "vm_name2"
+    node.vm.network "public_network", bridge: "networkcard", ip: "vm_ipnr2"
+    node.vm.provider "virtualbox" do |vmvbox|
+      vmvbox.memory = "vm_mem2"
+      vmvbox.cpus = vm_cpu2
+    end
+  end
+
+  config.vm.define "vm_name3" do |node|
+    node.vm.box =  "vm_type3"
+    node.vm.hostname = "vm_name3"
+    node.vm.network "public_network", bridge: "networkcard", ip: "vm_ipnr3"
+    node.vm.provider "virtualbox" do |vmvbox|
+      vmvbox.memory = "vm_mem3"
+      vmvbox.cpus = vm_cpu3
+    end
+  end
+
+  #https://www.vagrantup.com/docs/synced-folders/basic_usage
+  config.vm.synced_folder "./vagrant", "/vagrant/", enable: true
+  config.vm.provision "shell", inline: <<-SHELL
+    #parameter bij aanroep is script dat product X installeert
+    sudo sh /vagrant/vagrantsetup1.sh projectname
+  SHELL
+end

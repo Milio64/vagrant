@@ -35,6 +35,9 @@ fi
 
 projectdir=$basedir/$projectname
 
+sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup1.sh
+sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup2.sh
+
 #Bestaat project al?
 if [ -d $projectdir ] ; 
   then
@@ -44,20 +47,20 @@ if [ -d $projectdir ] ;
     #If $basedir/vagrant/projects/vagrantsetup$projectname.sh not exist then copy 
     if [ ! -f $basedir/vagrant/project/vagrantsetup-$projectname.sh ] ;
       then 
-        [ -f $projectdir/share/vagrantsetup-$projectname.sh ] && cp $projectdir/share/vagrantsetup-$projectname.sh $basedir/vagrant/project/
+        [ -f $projectdir/vagrant/vagrantsetup-$projectname.sh ] && cp $projectdir/vagrant/vagrantsetup-$projectname.sh $basedir/vagrant/project/
       else  
-        echo "Dont forget to update $basedir/vagrant/project/vagrantsetup-$projectname.sh if needed!" >> $projectdir/share/message.log
+        echo "Dont forget to update $basedir/vagrant/project/vagrantsetup-$projectname.sh if needed!" >> $projectdir/vagrant/message.log
     fi
     ########################################################
-    if [ ! -f $basedir/vagrant/project/.bash_history-$projectname.sh ] ;
+    if [ ! -f $basedir/vagrant/project/.bash_history-$projectname ] ;
       then 
-        [ -f $projectdir/share/.bash_history-projectname.sh ] && cp $projectdir/share/.bash_history$projectname.sh $basedir/vagrant/project/
+        [ -f $projectdir/vagrant/root/.bash_history ] && cp $projectdir/vagrant/root/.bash_history $basedir/vagrant/project/.bash_history-$projectname
       else  
-        echo "Dont forget to update $basedir/vagrant/project/.bash_history-$projectname.sh if needed!"  >> $projectdir/share/message.log
+        echo "Dont forget to update $basedir/vagrant/project/.bash_history-$projectname.sh if needed!"  >> $projectdir/vagrant/message.log
     fi
     ########################################################
     #MyVars.sh will be updated remove old one
-    [ -f $projectdir/share/MyVars.sh ] && rm $projectdir/share/MyVars.sh
+    [ -f $projectdir/vagrant/MyVars.sh ] && rm $projectdir/vagrant/MyVars.sh
 
   else
     #New project
@@ -65,20 +68,31 @@ if [ -d $projectdir ] ;
     #Make directory's and supporting files
     mkdir $projectdir $projectdir/srv
     cp $basedir/vagrant/.gitignore $projectdir/.gitignore
-    cp -r $basedir/vagrant/share $projectdir/share
+    cp -r $basedir/vagrant/vagrant $projectdir/vagrant
+
+    ########################################################
     if [ -f $basedir/vagrant/project/vagrantsetup-$projectname.sh ] ;
       then
-        cp $basedir/vagrant/project/vagrantsetup-$projectname.sh $projectdir/share
+        cp $basedir/vagrant/project/vagrantsetup-$projectname.sh $projectdir/vagrant
       else
-        echo "make new file: $projectdir/share/vagrantsetup-$projectname.sh to kickstart your project installation"  >> $projectdir/share/message.log
-        echo "Dont forget to update $basedir/vagrant/project/vagrantsetup-$projectname.sh if needed!"  >> $projectdir/share/message.log
+        echo "make new file: $projectdir/vagrant/vagrantsetup-$projectname.sh to kickstart your project installation"  >> $projectdir/vagrant/message.log
+        echo "Dont forget to update $basedir/vagrant/project/vagrantsetup-$projectname.sh if needed!"  >> $projectdir/vagrant/message.log
+    fi
+    ########################################################
+    if [ -f $basedir/vagrant/project/.bash_history-$projectname ] ;
+      then
+        cp $basedir/vagrant/project/.bash_history-$projectname $projectdir/vagrant/root/.bash_history
+      else
+        echo "make new file: $projectdir/vagrant/vagrantsetup-$projectname.sh to kickstart your project installation"  >> $projectdir/vagrant/message.log
+        echo "Dont forget to update $basedir/vagrant/project/vagrantsetup-$projectname.sh if needed!"  >> $projectdir/vagrant/message.log
     fi
 fi
 
 #version control vagrantfile
+[ -f asedir/vagrant/vagrantfile.template$vm_number ] && echo $basedir/vagrant/vagrantfile.template$vm_number not defined. Exit ; exit 1
 [ -f $projectdir/vagrantfile.old ] && rm $projectdir/vagrantfile.old
 [ -f $projectdir/vagrantfile ]     && mv $projectdir/vagrantfile $projectdir/vagrantfile.old
-[ ! -f $projectdir/vagrantfile ]   && cp $basedir/vagrant/vagrantfile.template $projectdir/vagrantfile
+[ ! -f $projectdir/vagrantfile ]   && cp $basedir/vagrant/vagrantfile.template$vm_number $projectdir/vagrantfile
 
 #Virtualization host dependent variable.
 #########################################################################################
@@ -110,6 +124,11 @@ esac
 #########################################################################################
 #########################################################################################
 
+#Make MyVars.sh to pass variables to VM.
+echo "projectname=${projectname}"    >>     $projectdir/vagrant/MyVars.sh
+echo "vm_number=${vm_number}"        >>     $projectdir/vagrant/MyVars.sh
+echo "vm_name=( ${vm_name[@]} )"     >>     $projectdir/vagrant/MyVars.sh
+echo "vm_ipnr=( ${vm_ipnr[@]} )"     >>     $projectdir/vagrant/MyVars.sh
 
 #change keywords in vagrantfile
 declare -i i=0
@@ -122,11 +141,9 @@ do
   sed -i 's/vm_cpu'$i'/'${vm_cpu[$x]}'/g'   $projectdir/vagrantfile
   sed -i 's/vm_mem'$i'/'${vm_mem[$x]}'/g'   $projectdir/vagrantfile
   
-  echo ${vm_name[$x]}=${vm_ipnr[$x]} >>     $projectdir/share/MyVars.sh
+  echo ${vm_name[$x]}=${vm_ipnr[$x]} >>     $projectdir/vagrant/MyVars.sh
 done
-echo "vm_number=${vm_number}"          >>     $projectdir/share/MyVars.sh
-echo "vm_name=( ${vm_name[@]} )"              >>     $projectdir/share/MyVars.sh
-echo "vm_ipnr=( ${vm_ipnr[@]} )"              >>     $projectdir/share/MyVars.sh
+
 
 sed -i 's/projectname/'$projectname'/g'     $projectdir/vagrantfile
 
