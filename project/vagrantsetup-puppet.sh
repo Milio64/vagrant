@@ -1,11 +1,14 @@
 #!/bin/sh
 
 #if exist then exit because Virtual machine is setup alread, no installation steps
+sudo [ -f vagrantsetup$projectname.started ] && exit 0
 sudo [ -f vagrantsetup$projectname.done ] && exit 0
+echo "vagrantsetup-$projectname done"  /root/vagrantsetup-$projectname.started
 
 #variable init
-[ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
+#source commando doesn work on Debian, this does
 . /etc/os-release
+projectname=$1
 
 case "$ID" in
     "rocky")
@@ -13,7 +16,6 @@ case "$ID" in
       if [[ $HOSTNAME == puppet ]] ;
         then
           sudo yum -y install puppetserver
-          #sudo yum install puppet-agent
         else
           sudo yum -y install puppet-agent
       fi
@@ -26,7 +28,7 @@ case "$ID" in
           sudo zypper install -y install puppetserver
           #sudo zypper install puppet-agent
         else
-          #tested deze combinatie werkt niet
+          #tested this combi doesnt work
           #zou geinstalleerd moeten zijn in: /opt/puppetlabs/puppet/bin
           ####################################################################
           ####################################################################
@@ -36,11 +38,12 @@ case "$ID" in
       sudo zypper update -y
     ;;
     "debian")
-      #not yet tested
       ####################################################################
       ####################################################################
       wget https://apt.puppet.com/puppet7-release-focal.deb
       sudo dpkg -i puppet7-release-focal.deb
+      sudo apt-get update
+
       if [[ $HOSTNAME == puppet ]] ;
         then
           apt-get install -y puppetserver
@@ -48,7 +51,6 @@ case "$ID" in
         else
           sudo apt-get install -y puppet-agent
       fi
-      sudo apt-get update
     ;;   
     *)
     echo "OS Niet gedefineerd"
@@ -58,16 +60,15 @@ esac
 
 #start configuratie from agents
 export PATH=/opt/puppetlabs/bin:$PATH
-puppet config set server $puppet --section main
+puppet config set server puppet.localdomain --section main
 
 if [[ $HOSTNAME == puppet ]] ;
   then
-    for (( x=0; x<$vm_number; x++))
-    do
       sudo systemctl start puppetserver
       sudo systemctl enable puppetserver
-
-      sudo puppetserver ca sign --certname ${vm_name[$x]}
+      ###############################################
+      #sudo puppetserver ca sign --certname [naam]
+      ###############################################
     done
   else
     #first time, generate ssl cert for puppet agent
@@ -81,5 +82,9 @@ fi
 #sudo firewall-cmd --permanent --zone=public --add-port=XXXXX/tcp
 #sudo systemctl reload firewalld
 
-echo "Init done" > vagrantsetup$projectname.done
+if [ -f /root/vagrantsetup-$projectname.started ] ;
+  then
+    echo "vagrantsetup-$projectname done"  /root/vagrantsetup-$projectname.done
+    rm /root/vagrantsetup-$projectname.started
+fi
 
