@@ -1,6 +1,6 @@
 #!/bin/sh
 #Init not second time.
-sudo [ -f /root/vagrant-firsttime.done ] && exit 0
+sudo [ -f /root/vagrantsetup1.done ] && exit 0
 
 #register my ssh key to login as root.
 sudo [ ! -d /root/.ssh ] && sudo mkdir /root/.ssh
@@ -33,11 +33,11 @@ case "$ID" in
 esac  
 
 #shedule the installation from the project tools
-sudo echo "*/2 * * * * /bin/sh /vagrant/vagrant-install-$1.sh >> /root/setup.log" >> /root/setup.log
+sudo echo "*/2 * * * * /bin/sh /vagrant/vagrantsetup2.sh $1 >> /root/setup.log" >> /root/setup.log
 sudo crontab /root/setup.log
 
 #zorgen dat init niet nog een keer draait
-echo "Init done" > /root/vagrant-firsttime.done
+echo "Init done" > /root/vagrantsetup1.done
 
 
 

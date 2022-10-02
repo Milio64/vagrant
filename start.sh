@@ -23,39 +23,55 @@ esac
 #define variable in external file
 #########################################################################################
 #########################################################################################
-if [ -f $basedir/vagrant/$1.sh ]
+if [ -f $basedir/vagrant/project/$1.sh ]
   then
-    source $basedir/vagrant/$1.sh
+    source $basedir/vagrant/project/$1.sh
   else
-    echo "file '$basedir/vagrant/$1.sh' bestaat niet"
-    echo "maak deze aan met juiste parameter en start opnieuw"
+    echo "file '$basedir/vagrant/project/$1.sh' bestaat niet"
+    echo "maak deze aan en start opnieuw"
     echo "exit"
     exit 1
 fi
 
 projectdir=$basedir/$projectname
 
-#new projectdir
+#Bestaat project al?
 if [ -d $projectdir ] ; 
   then
-    #Update install file in vagrant directory
-    [ -f $projectdir/share/vagrant-install-$projectname.sh ] && cp $projectdir/share/vagrant-install-$projectname.sh $basedir/vagrant/share/
-    #make sure host variables are available on VM
+
+    #Existing project
+    ########################################################
+    #If $basedir/vagrant/projects/vagrantsetup$projectname.sh not exist then copy 
+    if [ ! -f $basedir/vagrant/project/vagrantsetup-$projectname.sh ] ;
+      then 
+        [ -f $projectdir/share/vagrantsetup-$projectname.sh ] && cp $projectdir/share/vagrantsetup-$projectname.sh $basedir/vagrant/project/
+      else  
+        echo "Dont forget to update $basedir/vagrant/project/vagrantsetup-$projectname.sh if needed!" >> $projectdir/share/message.log
+    fi
+    ########################################################
+    if [ ! -f $basedir/vagrant/project/.bash_history-$projectname.sh ] ;
+      then 
+        [ -f $projectdir/share/.bash_history-projectname.sh ] && cp $projectdir/share/.bash_history$projectname.sh $basedir/vagrant/project/
+      else  
+        echo "Dont forget to update $basedir/vagrant/project/.bash_history-$projectname.sh if needed!"  >> $projectdir/share/message.log
+    fi
+    ########################################################
+    #MyVars.sh will be updated remove old one
     [ -f $projectdir/share/MyVars.sh ] && rm $projectdir/share/MyVars.sh
+
   else
+    #New project
+    ########################################################
     #Make directory's and supporting files
     mkdir $projectdir $projectdir/srv
     cp $basedir/vagrant/.gitignore $projectdir/.gitignore
     cp -r $basedir/vagrant/share $projectdir/share
-
-
-    #remove unneeded config file from project directory
-    rm -f $projectdir/share/vagrant-install-*.sh
-    if [ -f $basedir/vagrant/share/vagrant-install-$projectname.sh ] ;
+    if [ -f $basedir/vagrant/project/vagrantsetup-$projectname.sh ] ;
       then
-        cp $basedir/vagrant/share/vagrant-install-$projectname.sh $projectdir/share
+        cp $basedir/vagrant/share/vagrantsetup-$projectname.sh $projectdir/share
       else
-        cp $basedir/vagrant/share/vagrant-install-.sh $projectdir/share
+        echo "make new file: $projectdir/share/vagrantsetup-$projectname.sh to kickstart your project installation"  >> $projectdir/share/message.log
+        echo "Dont forget to update $basedir/vagrant/project/vagrantsetup-$projectname.sh if needed!"  >> $projectdir/share/message.log
     fi
 fi
 
@@ -97,7 +113,7 @@ esac
 
 #change keywords in vagrantfile
 declare -i i=0
-for (( x=0; x<$vm_number; x++))
+for (( x=0; x<$vm_number; x++ ))
 do
   ((i++)) 
   sed -i 's/vm_name'$i'/'${vm_name[$x]}'/g' $projectdir/vagrantfile
