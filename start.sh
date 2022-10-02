@@ -68,7 +68,7 @@ if [ -d $projectdir ] ;
     cp -r $basedir/vagrant/share $projectdir/share
     if [ -f $basedir/vagrant/project/vagrantsetup-$projectname.sh ] ;
       then
-        cp $basedir/vagrant/share/vagrantsetup-$projectname.sh $projectdir/share
+        cp $basedir/vagrant/project/vagrantsetup-$projectname.sh $projectdir/share
       else
         echo "make new file: $projectdir/share/vagrantsetup-$projectname.sh to kickstart your project installation"  >> $projectdir/share/message.log
         echo "Dont forget to update $basedir/vagrant/project/vagrantsetup-$projectname.sh if needed!"  >> $projectdir/share/message.log
