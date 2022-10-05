@@ -1,24 +1,10 @@
 
-#Check parameter is given
-#if [ -v 1 ]; then echo Set; else echo Not set && exit; fi
-
-#define variable
-#########################################################################################
-#########################################################################################
-case $HOSTNAME in
-  EmileWerkkamer)
+if [ -d /drives/c ]
+  then
+    basedir=/drives/c/werk/github
+  else
     basedir=/c/werk/github
-  ;;
-  Emile-SPX)
-    basedir=/drives/c/werk/github
-  ;;
-  Emile-Lenovo)
-    basedir=/drives/c/werk/github
-  ;;
-  *)
-    basedir=/drives/c/werk/github
-  ;;
-esac
+fi
 
 #define variable in external file
 #########################################################################################
