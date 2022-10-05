@@ -45,6 +45,6 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "./vagrant", "/vagrant/", enable: true
   config.vm.provision "shell", inline: <<-SHELL
     #parameter bij aanroep is script dat product X installeert
-    sudo sh /vagrant/vagrantsetup1.sh projectname
+    sudo sh /vagrant/vagrantsetup1.sh projectname domain
   SHELL
 end

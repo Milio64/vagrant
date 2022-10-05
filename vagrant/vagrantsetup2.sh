@@ -9,12 +9,16 @@ echo "vagrantsetup2, started" > /root/vagrantsetup2.started
 #source commando doesn work on Debian, this does
 . /etc/os-release
 projectname=$1
+domain=$2
 
 #crontab weer leeg maken
 crontab -r
 
 #register VM's in hosts file
 sudo cat /vagrant/hosts >> /etc/hosts
+
+#set hostname and domain name (otherwise somtimes system uses domain prefix from DHCP scope)
+hostnamectl set-hostname $HOSTNAME$domain
 
 #message by login on VM about update procedure
 #do not overwrite $bestand OS specific settings!!

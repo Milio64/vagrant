@@ -1,11 +1,12 @@
 projectname=puppet
 vm_number=4
-vm_name=( "puppet" "rocky8" "debian9" "sles15" )
+vm_name=( "$projectname" "rocky8" "debian9" "sles15" )
 #we have to escape the "/" for "sed"
 vm_type=( "generic\/rocky8" "generic\/rocky8" "generic\/debian9" "generic\/opensuse15" )
 vm_cpu=( 2 1 1 1 )
 vm_ipnr=( 192.168.178.25 192.168.178.26 192.168.178.27 192.168.178.28 )
 vm_mem=( 4096 1024 1024 1024 )
+domain=.localdomain
 case $HOSTNAME in
   EmileWerkkamer)
   ;;

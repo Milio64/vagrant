@@ -123,10 +123,10 @@ esac
 [ -f $projectdir/vagrant/MyVars.sh ] && rm $projectdir/vagrant/MyVars.sh
 
 #Make MyVars.sh to pass variables to VM.
-echo "projectname=${projectname}"    >>                $projectdir/vagrant/MyVars.sh
-echo "vm_number=${vm_number}"        >>                $projectdir/vagrant/MyVars.sh
-echo "vm_name=( ${vm_name[@]} )"     >>                $projectdir/vagrant/MyVars.sh
-echo "vm_ipnr=( ${vm_ipnr[@]} )"     >>                $projectdir/vagrant/MyVars.sh
+echo "projectname=${projectname}"                   >> $projectdir/vagrant/MyVars.sh
+echo "vm_number=${vm_number}"                       >> $projectdir/vagrant/MyVars.sh
+echo "vm_name=( ${vm_name[@]} )"                    >> $projectdir/vagrant/MyVars.sh
+echo "vm_ipnr=( ${vm_ipnr[@]} )"                    >> $projectdir/vagrant/MyVars.sh
 
 #change keywords in vagrantfile
 declare -i i=0
@@ -140,10 +140,11 @@ do
   sed -i 's/vm_mem'$i'/'${vm_mem[$x]}'/g'              $projectdir/vagrantfile
   
   echo ${vm_name[$x]}=${vm_ipnr[$x]}                >> $projectdir/vagrant/MyVars.sh
-  echo ${vm_ipnr[$x]}   ${vm_name[$x]}.localdomain  >> $projectdir/vagrant/hosts
+  echo ${vm_ipnr[$x]}   ${vm_name[$x]}$domain       >> $projectdir/vagrant/hosts
 done
 
-sed -i 's/projectname/'$projectname'/g'     $projectdir/vagrantfile
+sed -i 's/projectname/'$projectname'/g'                $projectdir/vagrantfile
+sed -i 's/domain/'$domain'/g'                          $projectdir/vagrantfile
 
 pwd=$(pwd)
 if [ "$pwd" = "$projectdir" ] ;
@@ -151,7 +152,7 @@ if [ "$pwd" = "$projectdir" ] ;
     vagrant up
   else
     cd $projectdir
+    echo "cd $projectdir"
     echo "'vagrant up' to start the test environment"
-    cmd
 fi
 

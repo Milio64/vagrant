@@ -1,4 +1,8 @@
 #!/bin/sh
+#Keep this file so clean as possible
+#Vagrant UP will wait till the commands in here are finished before next VM start!
+#Thats why i call contrab for the more heavy load install work.
+
 #Init not second time.
 sudo [ -f /root/vagrantsetup1.done ] && exit 0
 
@@ -33,10 +37,10 @@ case "$ID" in
 esac  
 
 #shedule the installation from the project tools
-sudo echo "*/2 * * * * /bin/sh /vagrant/vagrantsetup2.sh $1 >> /root/setup.log" >> /root/setup.log
+sudo echo "*/2 * * * * /bin/sh /vagrant/vagrantsetup2.sh $1 $2 >> /root/setup.log" >> /root/setup.log
 sudo crontab /root/setup.log
 
-#zorgen dat init niet nog een keer draait
+#dont run init again
 echo "Init done" > /root/vagrantsetup1.done
 
 
