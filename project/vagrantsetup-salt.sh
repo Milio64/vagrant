@@ -67,9 +67,9 @@ case $HOSTNAME in
         #voor ondersteuning van GIT moet onderstaande 3 packages geinstalleerd worden
         sudo dnf install -y epel-release
         #pygit heeft de voorkeur
-        sudo yum install -y python3-pygit2
+        sudo yum install -y python3-pygit2 git
         #GitPython is bekend met memory leaks bij langdurige gebruik! if needed check check check! for test installed!
-        sudo yum install -y python3-GitPython
+        sudo yum install -y python3-GitPython 
         sudo yum install -y python3-dulwich
       ;;
       "opensuse-leap") #OpenSuse installatie commando's

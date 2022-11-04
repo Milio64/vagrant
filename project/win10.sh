@@ -1,10 +1,10 @@
-projectname=test
+projectname=win10
 vm_number=1
 vm_name=( "$projectname" )
 #we have to escape the "/" for "sed"
-vm_type=( "generic\/rocky8" )
+vm_type=( "baunegaard\/win10pro-da" )
 vm_cpu=( 1 )
-vm_ipnr=( 192.168.178.35 )
+vm_ipnr=( 192.168.178.36 )
 vm_mem=( 1024 )
 domain=.localdomain
 
