@@ -6,6 +6,13 @@ if [ -d /drives/c ]
     basedir=/c/werk/github
 fi
 
+#set all file to linux lineend
+files=( "project/$1.sh" "project/vagrantsetup-$1.sh" "project/.bash_history-$1.sh" "vagrant/vagrantsetup1.sh" "vagrant/vagrantsetup2.sh" )
+
+for file in "${files[@]}"; do 
+  if  [ -f $basedir/vagrant/$file ]; then sed -i 's/\r$//' $basedir/vagrant/$file; fi
+done
+
 #define variable in external file
 #########################################################################################
 #########################################################################################
