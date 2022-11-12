@@ -35,6 +35,8 @@ sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup2.sh
 if [ -d $projectdir ] ; 
   then
     #Existing project
+    #set right so i can change files
+    chmod 777 $projectdir -R
     ########################################################
     #If $basedir/vagrant/projects/vagrantsetup-$projectname.sh not exist then 
     if [ ! -f $basedir/vagrant/project/vagrantsetup-$projectname.sh ] ;
@@ -56,13 +58,18 @@ if [ -d $projectdir ] ;
         [ -f $projectdir/vagrant/root/.bash_history ] && cp $projectdir/vagrant/root/.bash_history $basedir/vagrant/project/.bash_history-$projectname
     fi
     ########################################################
+
   else
     #New project
     ########################################################
     #Make directory's and supporting files
     mkdir $projectdir $projectdir/srv
+
     cp $basedir/vagrant/.gitignore $projectdir/.gitignore
     cp -r $basedir/vagrant/vagrant $projectdir/vagrant
+
+    #set right so i can change files
+    chmod 777 $projectdir -R
 
     ########################################################
     if [ -f $basedir/vagrant/project/vagrantsetup-$projectname.sh ] ;
@@ -81,11 +88,12 @@ if [ -d $projectdir ] ;
       else
         echo "if you want history on you VM make new file: "    >> $projectdir/vagrant/message.log
         echo "  $projectdir/vagrant/.bash_history-$projectname.sh "      >> $projectdir/vagrant/message.log
-        echo "or: "                                                     >> $projectdir/vagrant/message.log
+        echo "or: "                                                      >> $projectdir/vagrant/message.log
         echo "  $basedir/vagrant/project/.bash_histroy-$projectname.sh"  >> $projectdir/vagrant/message.log
         echo "Dont forget to update if needed!"  >> $projectdir/vagrant/message.log
     fi
 fi
+                                                                           
 
 #version control vagrantfile
 #[ -e $basedir/vagrant/vagrantfile.template$vm_number ] && echo $basedir/vagrant/vagrantfile.template$vm_number not defined. Exit ; exit 1
