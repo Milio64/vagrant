@@ -1,198 +1,307 @@
-#1661441269
-salt-key -L
-#1661441563
 salt '*' salt.state 
-#1661441579
-systemctl stop salt-master.service 
-#1661441581
-systemctl start salt-master.service 
-#1661441586
-salt '*' salt.state 
-#1661441642
-salt '*' state.sls  
-#1661441694
-salt '*' state.apply
-exit
-#1661494548
-history
-#1661494555
-salt '*' state.apply
-#1661494581
-passwd 
-#1661496232
-sudo sed -i 's/^root*/root:$6$PjVXvGHBfjAom0fs$01tRho2BPeCF4J4AJUwqrUYf93ofyijdkDvuO2Mkd.7TWjwd0fTKXE8xZCm3McLoiYtjuOlzZbxM6BWDbEkdN0:19230::::::/' /etc/shadowtest
-#1661496639
-sed -i 's/^root*/c\root:$6$PjVXvGHBfjAom0fs$01tRho2BPeCF4J4AJUwqrUYf93ofyijdkDvuO2Mkd.7TWjwd0fTKXE8xZCm3McLoiYtjuOlzZbxM6BWDbEkdN0:19230::::::' /etc/shadowtest
-#1661496722
-sed -i 's/^root*/c\root:$6$PjVXvGHBfjAom0fs$01tRho2BPeCF4J4AJUwqrUYf93ofyijdkDvuO2Mkd.7TWjwd0fTKXE8xZCm3McLoiYtjuOlzZbxM6BWDbEkdN0:19230::::::/' /etc/shadowtest
-#1661496912
-sed -i '/root/c\root eenvoudigere is removed by the admin.' /etc/shadowtest
-#1661496949
-sed -i '/root/c\root:$6$PjVXvGHBfjAom0fs$01tRho2BPeCF4J4AJUwqrUYf93ofyijdkDvuO2Mkd.7TWjwd0fTKXE8xZCm3McLoiYtjuOlzZbxM6BWDbEkdN0:19230::::::' /etc/shadowtest
-#1661499773
-/bin/sh
-#1661499903
-history
-#1661499938
-exit
-#1661500890
-history
-#1661501041
-sh /vagrant/master-state-single.sh 
-#1661501090
-rsync -avzr -e ssh --delete /vagrant/srv/salt/state/base/ /srv/salt/state/base/
-#1661501226
-sh /vagrant/master-state-single.sh 
-#1661501461
-cd /vagrant
-#1661501463
+salt '*' saltutil.refresh_pillar
+salt '*' pillar.items
+salt '*' state.highstate
+salt '*' state.highstate saltenv=base
+cat /etc/os-release 
+dnf refresh
+dnf update -y
+salt '*' state.highstate saltenv=base
+salt '*' state.highstate saltenv=prod
 ll
-#1661501472
-cd etc
-#1661501482
-cd salt/master.d/
-#1661501483
+salt '*' state.highstate saltenv=prod
+salt '*' state.highstate saltenv=base
 ll
-#1661501499
+salt '*' state.highstate saltenv=base
+salt '*' state.highstate saltenv=prod
+#1663230058
+cd salt-multi/
+#1663230062
+ll
+#1663230067
+git pull
+#1663230088
+git branch --set-upstream-to=origin/<branch> main
+#1663230096
+git branch --set-upstream-to=origin/main main
+#1663230152
+ll
+#1663230212
+echo "# test" >> README.md
+#1663230212
+git init
+#1663230212
+git add README.md
+#1663230212
+git commit -m "first commit"
+#1663230212
+git branch -M main
+#1663230212
+git remote add origin git@github.com:Milio64/salt-multi.git
+#1663230214
+git push -u origin main
+#1663230286
+git config --global user.email "milioanis@gmail.com"
+#1663230286
+git config --global user.name "milio
+git push -u origin main
+#1663230318
+git config --global user.name "milio"
+#1663230325
+git push -u origin main
+#1663230599
+ll
+#1663230604
+git init
+#1663230614
+git clone git@github.com:Milio64/salt-multi.git
+#1663231861
+ll
+#1663231889
+salt '*' state.highstate saltenv=prod
+#1663231902
+salt '*' state.highstate saltenv=base
+#1663231917
+salt '*' pillar.items
+#1663231940
+salt '*' pillar.items saltenv=prod
+#1663232318
+/vagrant/multi.sh 
+#1663232340
+sh /vagrant/multi.sh 
+#1663232421
+salt '*' pillar.items saltenv=pro[B
+#1663232427
+10:59:51 root@salt salt-multi ±|master ✗|→ salt '*' pillar.items saltenv=pro
+#1663232436
+salt '*' saltutil.refresh_pillar
+#1663232454
+salt '*' pillar.items saltenv=prod
+#1663232529
+dnf install mc
+#1663232562
+mc
+#1663232743
+systemctl restart salt-master.service 
+#1663232752
+salt '*' pillar.items saltenv=prod
+#1663232822
+salt '*' pillar.items saltenv=base
+#1663232839
+salt '*' pillar.items pillarenv=base
+#1663232847
+salt '*' pillar.items pillarenv=prod
+#1663240321
+c
+#1663240325
+cd /
+#1663240330
+systemctl restart salt-master.service 
+#1663240359
+systemctl status salt-master.service 
+cd salt-multi
+mkdir salt-multi
+cd salt-multi
+git init
+git remote add origin git@github.com:Milio64/salt-multi.git
+git branch -M main
+git pull
+git branch --set-upstream-to=origin/<branch> main
+cd ..
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
+#1663320272
+systemctl restart salt-master.service 
+#1663320298
+systemctl status salt-master.service 
+#1663320476
+systemctl restart salt-master.service 
+#1663320479
+systemctl status salt-master.service 
+#1663320526
+salt '*' state.highstate saltenv=base
+#1663320533
+salt '*' state.highstate saltenv=prod
+#1663320681
+salt '*' state.highstate saltenv=base
+#1663320716
+salt '*' pillar.items saltenv=prod
+#1663320722
+salt '*' pillar.items saltenv=base
+#1663321074
+systemctl restart salt-master.service 
+#1663321087
+systemctl status salt-master.service 
+#1663321129
+systemctl restart salt-master.service 
+#1663321132
+systemctl status salt-master.service 
+#1663321141
+salt '*' state.highstate saltenv=base
+#1663321157
+updatedb
+#1663321172
+locate main.sls
+#1663321179
+locate top.sls
+#1663321232
+cd /var/cache/salt/minion/files/base/
+#1663321234
+ll
+#1663321246
+cd /var/cache/salt/master
+#1663321247
+ll
+#1663321257
+cd roots
+#1663321258
+ll
+#1663321261
+cd hash
+#1663321262
+ll
+#1663321266
+cd prod
+#1663321271
+ll
+#1663321307
 pwd
-#1661501572
-sh /vagrant/master-state-single.sh 
-#1661501582
-mc
-#1661501587
-zypper in mc
-#1661501606
-mc
-#1661501635
-sh /vagrant/master-state-single.sh 
-#1661501652
-salt '*' state.apply
-#1661501864
-admezeijl:core' failed: Jinja syntax er
-rsync -avzr -e ssh --delete /vagrant/srv/salt/state/base/ /srv/salt/state/base/
-#1661501871
-rsync -avzr -e ssh --delete /vagrant/srv/salt/state/base/ /srv/salt/state/base/
-#1661501892
-rsync -avzr --delete /vagrant/srv/salt/state/base/ /srv/salt/state/base/
-#1661501903
-rsync -vzr --delete /vagrant/srv/salt/state/base/ /srv/salt/state/base/
-#1661501912
-rsync -zr --delete /vagrant/srv/salt/state/base/ /srv/salt/state/base/
-#1661501918
-rsync -r --delete /vagrant/srv/salt/state/base/ /srv/salt/state/base/
-#1661501933
-rsync -avrz --delete /vagrant/srv/salt/state/base/ /srv/salt/state/base/
-#1661501938
-rsync -avz --delete /vagrant/srv/salt/state/base/ /srv/salt/state/base/
-#1661501977
-mc
-#1661502031
-rsync -avz --delete /vagrant/srv/salt/state/base/ /srv/salt/state/base/
-#1661502063
-mc
-#1661502112
-rsync -avz --delete /vagrant/srv/salt/state/base/ /srv/salt/state/base/
-#1661502139
-systemctl stop salt-master.service
-#1661502141
-systemctl start salt-master.service
-#1661502150
-salt '*' state.apply
-#1661502247
-cat /etc/salt/master.d/state.single.conf
-#1661502291
-vim /etc/salt/master.d/state.single.conf
-#1661502308
-systemctl stop salt-master.service
-#1661502311
-systemctl start salt-master.service
-#1661502315
-salt '*' state.apply
-#1661502347
-mc
-#1661502408
-salt '*' state.apply
-#1661502417
-mc
-#1661502469
-salt '*' state.apply
-#1661503608
-systemctl stop salt-master.service
-#1661503611
-systemctl start salt-master.service
-#1661503614
-salt '*' state.apply
-#1661503665
-alt-run jobs.lookup_jid 20220826084700048298
-#1661503674
-salt-run jobs.lookup_jid 20220826084700048298
-#1661505175
-salt -G 'os_family:RedHat' test.ping
-#1661505230
-salt 'minion1' grains.setval roles '[web,caching]'
-#1661505599
-salt-call cmd.run 'ls /etc/salt'
-#1661505620
-salt-call cmd.run 'ls /etc/salt' -l debug
-#1661505667
-salt-call network.netstat
-#1661505790
-salt '*' saltutil.refresh_pillar
-#1661505800
-salt '*' pillar.items
-#1661506043
-salt '*' pillar.get name
-#1661506560
-salt '*' state.apply
-#1661506920
-salt 'minion1*' state.apply
-#1661506929
-salt 'minion1'
-#1661513579
-salt '*' pillar.items
-#1661513783
-salt '*' saltutil.refresh_pillar
-#1661513789
-salt '*' pillar.items
-#1661513913
-salt '*' saltutil.refresh_pillar
-#1661513917
-salt '*' pillar.items
-#1661513960
-salt '*' saltutil.refresh_pillar
-#1661513964
-salt '*' pillar.items
-#1661514120
-salt '*' pillar.get packages
-#1661514150
-salt '*' saltutil.refresh_pillar
-#1661514154
-salt '*' pillar.get packages
-#1661514555
-salt '*' state.apply
-#1661515086
-salt 'salt' state.apply
-#1661515452
-salt '*' saltutil.refresh_pillar
-#1661515460
-salt '*' pillar.get packages
-#1661515474
-salt 'salt' state.apply core
-#1661515686
-salt '*' saltutil.refresh_pillar
-#1661515689
-salt 'salt' state.apply core
-#1661516652
-salt '*' saltutil.refresh_pillar
-#1661516656
-salt 'salt' state.apply core
-#1661517044
-zypper remove mc
-#1661517049
-zypper remove htop
-#1661517076
-salt 'salt' state.apply core
-#1661523215
-salt '*' state.apply core
-#1661523477
-salt '*' state.apply 
+#1663321436
+salt '*' state.highstate saltenv=base
+#1663361100
+pwd
+#1663361109
+cd /var/cache/salt/master
+#1663361111
+ll
+#1663361121
+cd roots/
+#1663361123
+ll
+#1663361130
+cd hash/
+#1663361131
+ll
+#1663361178
+systemctl restart salt-master.service 
+#1663361184
+salt '*' state.highstate saltenv=base
+#1663361203
+salt '*' state.highstate saltenv=prod
+#1663361210
+salt '*' state.highstate 
+#1663361242
+less /var/log/salt/master 
+#1663361306
+systemctl status salt-master.service 
+#1663508321
+salt '*' state.highstate 
+#1663508346
+systemctl restart salt-master.service 
+#1663508356
+systemctl status salt-master.service 
+#1663508372
+systemctl stop salt-master.service 
+#1663508377
+systemctl status salt-master.service 
+#1663508385
+systemctl start salt-master.service 
+#1663508388
+systemctl status salt-master.service 
+#1663508412
+salt '*' state.highstate 
+#1663508489
+systemctl stop salt-master.service 
+#1663508498
+systemctl start salt-master.service 
+#1663508502
+systemctl status salt-master.service 
+#1663508543
+systemctl restart salt-master.service 
+#1663508546
+systemctl status salt-master.service 
+#1663508553
+salt '*' state.highstate 
+#1663508583
+systemctl status salt-master.service 
+#1663508601
+systemctl start salt-master.service 
+#1663508603
+systemctl status salt-master.service 
+#1663508714
+reboot
+#1663508878
+systemctl restart salt-master.service 
+#1663508881
+systemctl status salt-master.service 
+#1663508937
+systemctl restart salt-master.service 
+#1663508941
+systemctl status salt-master.service 
+#1663509080
+systemctl restart salt-master.service 
+#1663509088
+systemctl status salt-master.service 
+#1663509134
+rm /var/cache/salt/master/gitfs/ff77aa54548939adf6578d6455a7f575f16cbe721d94c8d5d4210c21407da164/.git/update.lk
+#1663509137
+systemctl restart salt-master.service 
+#1663509142
+systemctl status salt-master.service 
+#1663509161
+salt '*' state.highstate 
+#1663519111
+/var/cache/salt/master/gitfs/ff77aa54548939adf6578d6455a7f575f16cbe721d94c8d5d4210c21407da164/.git/update.lk
+#1663519111
+Total states run:     1
+#1663519111
+Total run time:   0.000 ms
+#1663519117
+vagrant halt
+#1667577191
+cat /etc/os-release 
+#1667577201
+dnf install git
+#1668090690
+systemctl restart salt
+#1668090700
+systemctl restart salt-master.service 
+#1668090708
+systemctl status salt-master.service 
+#1668090731
+q
+#1668090734
+
+#1668090743
+salt-run fileserver.file_list
+#1668090923
+systemctl status salt-master.service 
+#1668090945
+systemctl stop salt-master.service 
+#1668090950
+systemctl start salt-master.service 
+#1668090953
+systemctl status salt-master.service 
+#1668090961
+salt-run fileserver.file_list
+#1668090986
+dnf install git
+#1668091027
+git clone https://gitlab.com/RILP/saltstack
+#1668091056
+ll
+#1668091082
+cd saltstack/
+#1668091084
+ll
+#1668091940
+grep -v '^$\|^\s*#' master
+#1668091947
+cd ..
+#1668091952
+ll
+#1668091964
+cd /etc/salt
+#1668091966
+grep -v '^$\|^\s*#' master
+#1668091969
+ll

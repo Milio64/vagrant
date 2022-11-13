@@ -6,6 +6,17 @@ if [ -d /drives/c ]
     basedir=/c/werk/github
 fi
 
+#set all file to linux lineend
+files=( "project/$1.sh" "project/vagrantsetup-$1.sh" "project/.bash_history-$1.sh" "vagrant/vagrantsetup1.sh" "vagrant/vagrantsetup2.sh" )
+
+for file in "${files[@]}"; do 
+  if  [ -f $basedir/vagrant/$file ]; then sed -i 's/\r$//' $basedir/vagrant/$file; fi
+done
+
+#Al gedaan hierboven....
+#sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup1.sh
+#sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup2.sh
+
 #define variable in external file
 #########################################################################################
 #########################################################################################
@@ -21,13 +32,13 @@ fi
 
 projectdir=$basedir/$projectname
 
-sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup1.sh
-sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup2.sh
 
 #Bestaat project al?
 if [ -d $projectdir ] ; 
   then
     #Existing project
+    #set right so i can change files
+    chmod 777 $projectdir -R
     ########################################################
     #If $basedir/vagrant/projects/vagrantsetup-$projectname.sh not exist then 
     if [ ! -f $basedir/vagrant/project/vagrantsetup-$projectname.sh ] ;
@@ -49,13 +60,18 @@ if [ -d $projectdir ] ;
         [ -f $projectdir/vagrant/root/.bash_history ] && cp $projectdir/vagrant/root/.bash_history $basedir/vagrant/project/.bash_history-$projectname
     fi
     ########################################################
+
   else
     #New project
     ########################################################
     #Make directory's and supporting files
     mkdir $projectdir $projectdir/srv
+
     cp $basedir/vagrant/.gitignore $projectdir/.gitignore
     cp -r $basedir/vagrant/vagrant $projectdir/vagrant
+
+    #set right so i can change files
+    chmod 777 $projectdir -R
 
     ########################################################
     if [ -f $basedir/vagrant/project/vagrantsetup-$projectname.sh ] ;
@@ -74,11 +90,12 @@ if [ -d $projectdir ] ;
       else
         echo "if you want history on you VM make new file: "    >> $projectdir/vagrant/message.log
         echo "  $projectdir/vagrant/.bash_history-$projectname.sh "      >> $projectdir/vagrant/message.log
-        echo "or: "                                                     >> $projectdir/vagrant/message.log
+        echo "or: "                                                      >> $projectdir/vagrant/message.log
         echo "  $basedir/vagrant/project/.bash_histroy-$projectname.sh"  >> $projectdir/vagrant/message.log
         echo "Dont forget to update if needed!"  >> $projectdir/vagrant/message.log
     fi
 fi
+                                                                           
 
 #version control vagrantfile
 #[ -e $basedir/vagrant/vagrantfile.template$vm_number ] && echo $basedir/vagrant/vagrantfile.template$vm_number not defined. Exit ; exit 1
@@ -127,6 +144,7 @@ echo "projectname=${projectname}"                   >> $projectdir/vagrant/MyVar
 echo "vm_number=${vm_number}"                       >> $projectdir/vagrant/MyVars.sh
 echo "vm_name=( ${vm_name[@]} )"                    >> $projectdir/vagrant/MyVars.sh
 echo "vm_ipnr=( ${vm_ipnr[@]} )"                    >> $projectdir/vagrant/MyVars.sh
+echo "domain=$domain"                               >> $projectdir/vagrant/MyVars.sh
 
 #change keywords in vagrantfile
 declare -i i=0
