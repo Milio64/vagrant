@@ -149,10 +149,12 @@ sed -i 's/domain/'$domain'/g'                          $projectdir/vagrantfile
 pwd=$(pwd)
 if [ "$pwd" = "$projectdir" ] ;
   then
+    vagrant box update
     vagrant up
   else
     cd $projectdir
     echo "cd $projectdir"
+    echo "'vagrant box update' to update environment"
     echo "'vagrant up' to start the test environment"
 fi
 
