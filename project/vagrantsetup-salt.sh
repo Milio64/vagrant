@@ -93,6 +93,9 @@ case $HOSTNAME in
   
     echo hier nog GIT installatie in en meteen clone van repo zodat alles meteen werkt
 
+    echo "vagrantsetup-$1, done" > /root/vagrantsetup-$1.done
+    rm /root/vagrantsetup-$1.started
+
     echo salt-keys auto accepteren loop zodat de boel gaat werken
     while true
     do
