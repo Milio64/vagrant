@@ -44,8 +44,8 @@ sudo systemctl restart salt-minion
 
 case $HOSTNAME in
   "salt")
-    case "$ID" in
-      "rocky")
+  case "$ID_LIKE" in
+    "rhel centos fedora")
         echo Rocky linux salt-master installatie commandos
         sudo yum install -y salt-master
         sudo yum install -y salt-ssh
@@ -61,7 +61,7 @@ case $HOSTNAME in
         sudo yum install -y python3-GitPython 
         sudo yum install -y python3-dulwich
       ;;
-      "opensuse-leap")
+    "suse opensuse")
         echo OpenSuse salt-master installatie commando
         sudo zypper install -y salt-master
         sudo zypper install -y salt-ssh
@@ -71,7 +71,8 @@ case $HOSTNAME in
       ;;
       "debian")
 
-      ;;      *)
+      ;;
+      *)
         #echo "OS Niet gedefineerd"
         #exit 1
       ;;
