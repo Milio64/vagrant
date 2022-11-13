@@ -5,6 +5,8 @@
 
 #Init not second time.
 sudo [ -f /root/vagrantsetup1.done ] && exit 0
+sudo [ -f /root/vagrantsetup1.started ] && exit 0
+echo "vagrantsetup1 started" > /root/vagrantsetup1.started
 
 #register my ssh key to login as root.
 sudo [ ! -d /root/.ssh ] && sudo mkdir /root/.ssh
@@ -41,7 +43,7 @@ sudo echo "*/2 * * * * /bin/sh /vagrant/vagrantsetup2.sh $1 $2 >> /root/setup.lo
 sudo crontab /root/setup.log
 
 #dont run init again
-echo "Init done" > /root/vagrantsetup1.done
-
+echo "vagrantsetup1 done" > /root/vagrantsetup1.done
+rm /root/vagrantsetup1.started
 
 

@@ -13,6 +13,10 @@ for file in "${files[@]}"; do
   if  [ -f $basedir/vagrant/$file ]; then sed -i 's/\r$//' $basedir/vagrant/$file; fi
 done
 
+#Al gedaan hierboven....
+#sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup1.sh
+#sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup2.sh
+
 #define variable in external file
 #########################################################################################
 #########################################################################################
@@ -28,8 +32,6 @@ fi
 
 projectdir=$basedir/$projectname
 
-sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup1.sh
-sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup2.sh
 
 #Bestaat project al?
 if [ -d $projectdir ] ; 
