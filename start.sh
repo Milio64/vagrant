@@ -144,6 +144,7 @@ echo "projectname=${projectname}"                   >> $projectdir/vagrant/MyVar
 echo "vm_number=${vm_number}"                       >> $projectdir/vagrant/MyVars.sh
 echo "vm_name=( ${vm_name[@]} )"                    >> $projectdir/vagrant/MyVars.sh
 echo "vm_ipnr=( ${vm_ipnr[@]} )"                    >> $projectdir/vagrant/MyVars.sh
+echo "domain=$domain"                               >> $projectdir/vagrant/MyVars.sh
 
 #change keywords in vagrantfile
 declare -i i=0

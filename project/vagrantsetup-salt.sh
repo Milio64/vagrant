@@ -32,7 +32,7 @@ case "$ID_LIKE" in
 esac
 
 echo make file /etc/salt/minion.d/local.conf
-sudo echo "master: $master_ip" > /etc/salt/minion.d/local.conf
+sudo echo "master: ${vm_name[0]}$domain" > /etc/salt/minion.d/local.conf
 sudo echo "id: $HOSTNAME" >> /etc/salt/minion.d/local.conf
 
 echo start and enable salt-minion
@@ -43,7 +43,7 @@ sudo systemctl restart salt-minion
 #https://docs.saltproject.io/en/latest/ref/configuration/index.html
 
 case $HOSTNAME in
-  "salt")
+  "${vm_name[0]}$domain")
   case "$ID_LIKE" in
     "rhel centos fedora")
         echo Rocky linux salt-master installatie commandos
@@ -98,16 +98,15 @@ case $HOSTNAME in
     do
       [ -e /etc/salt/pki/master/minions_pre/* ] && sudo salt-key -A -y
     done
-
-  ;;
-  *)
-    echo Salt minion moet herstarten ivm wijziging in config voor die beschikbaar is
-    for (( i=1; i<=10; i++))
-    do
-     sleep 1m && sudo systemctl restart salt-minion
-    done
   ;;
 esac
 
 echo "vagrantsetup-$1, done" > /root/vagrantsetup-$1.done
 rm /root/vagrantsetup-$1.started
+
+echo Salt minion moet herstarten ivm wijziging in config voor die beschikbaar is
+for (( i=1; i<=10; i++))
+  do
+    sleep 1m && sudo systemctl restart salt-minion
+done
+
