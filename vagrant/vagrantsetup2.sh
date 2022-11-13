@@ -3,7 +3,7 @@
 #if exist then exit because Virtual machine is started before, no installation steps
 sudo [ -f /root/vagrantsetup2.done ] && exit 0
 sudo [ -f /root/vagrantsetup2.started ] && exit 0
-echo "vagrantsetup2, started" > /root/vagrantsetup2.started
+echo "vagrantsetup2, started" >> /root/vagrantsetup2.started
 
 #variable init
 #source commando doesn work on Debian, this does
@@ -38,10 +38,10 @@ echo "fi"                                    >> $bestand
 #Start vagrantsetup-project.sh if available
 if [ -f /vagrant/vagrantsetup-$projectname.sh ] ;
   then
-    sudo echo "/vagrant/vagrantsetup-$projectname started" > /root/vagrantsetup-$projectname.started
-    sudo echo "/vagrant/vagrantsetup-$projectname started" > /root/setup.log
+    sudo echo "/vagrant/vagrantsetup-$projectname started" >> /root/vagrantsetup-$projectname.started
+    sudo echo "/vagrant/vagrantsetup-$projectname started" >> /root/setup.log
 
-    echo "vagrantsetup2, done" > /root/vagrantsetup2.done
+    echo "vagrantsetup2, done" >> /root/vagrantsetup2.done
     rm /root/vagrantsetup2.started
 
     sudo /vagrant/vagrantsetup-$projectname.sh $projectname $domain

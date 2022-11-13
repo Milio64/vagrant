@@ -9,7 +9,7 @@ master_ip=$salt
 [ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
 . /etc/os-release
 
-#Start initial installation steps
+echo Start initial installation steps
 case "$ID_LIKE" in
     "rhel centos fedora")
     sudo rpm --import https://repo.saltproject.io/py3/redhat/8/x86_64/latest/SALTSTACK-GPG-KEY.pub
@@ -31,34 +31,38 @@ case "$ID_LIKE" in
     ;;
 esac
 
+echo make file /etc/salt/minion.d/local.conf
 sudo echo "master: $master_ip" > /etc/salt/minion.d/local.conf
 sudo echo "id: $HOSTNAME" >> /etc/salt/minion.d/local.conf
 
+echo start and enable salt-minion
 sudo systemctl enable salt-minion && sudo systemctl start salt-minion
 #sommige distributies starten salt direct na installatie! dus voor zekerheid:
 sudo systemctl restart salt-minion
 
 #https://docs.saltproject.io/en/latest/ref/configuration/index.html
-#Eventueel te wijzigen configuratie opties
+
 case $HOSTNAME in
   "salt")
     case "$ID" in
-      "rocky") #Rocky linux installatie commando's
+      "rocky")
+        echo Rocky linux salt-master installatie commandos
         sudo yum install -y salt-master
         sudo yum install -y salt-ssh
         sudo yum install -y salt-syndic
         sudo yum install -y salt-cloud
         sudo yum install -y salt-api
         
-        #voor ondersteuning van GIT moet onderstaande 3 packages geinstalleerd worden
+        echo voor ondersteuning van GIT moet onderstaande 3 packages geinstalleerd worden
         sudo dnf install -y epel-release
-        #pygit heeft de voorkeur
+        echo pygit heeft de voorkeur
         sudo yum install -y python3-pygit2 git
-        #GitPython is bekend met memory leaks bij langdurige gebruik! if needed check check check! for test installed!
+        echo GitPython is bekend met memory leaks bij langdurige gebruik! if needed check check check! for test installed!
         sudo yum install -y python3-GitPython 
         sudo yum install -y python3-dulwich
       ;;
-      "opensuse-leap") #OpenSuse installatie commando's
+      "opensuse-leap")
+        echo OpenSuse salt-master installatie commando
         sudo zypper install -y salt-master
         sudo zypper install -y salt-ssh
         sudo zypper install -y salt-syndic
@@ -73,10 +77,11 @@ case $HOSTNAME in
       ;;
     esac
   
-    #firewall open op de master only
+    echo firewall open op de master only
     sudo firewall-cmd --permanent --zone=public --add-port=4505-4506/tcp
     sudo systemctl reload firewalld
-
+    
+    echo start and enable salt-master    
     sudo systemctl enable salt-master && sudo systemctl start salt-master
     #sudo systemctl enable salt-syndic && sudo systemctl start salt-syndic
     sudo systemctl enable salt-api && sudo systemctl start salt-api
@@ -85,9 +90,9 @@ case $HOSTNAME in
     #sudo cp /vagrant/etc/salt/master.d/multi.conf /etc/salt/master.d/multi.conf
     #sudo systemctl restart salt-master.service
   
-    #hier nog GIT installatie in en meteen clone van repo zodat alles meteen werkt
+    echo hier nog GIT installatie in en meteen clone van repo zodat alles meteen werkt
 
-    #salt-key's auto accepteren loop zodat de boel gaat werken
+    echo salt-keys auto accepteren loop zodat de boel gaat werken
     while true
     do
       [ -e /etc/salt/pki/master/minions_pre/* ] && sudo salt-key -A -y
@@ -95,7 +100,7 @@ case $HOSTNAME in
 
   ;;
   *)
-    #Salt minion moet herstarten ivm wijziging in config voor die beschikbaar is
+    echo Salt minion moet herstarten ivm wijziging in config voor die beschikbaar is
     for (( i=1; i<=10; i++))
     do
      sleep 1m && sudo systemctl restart salt-minion
