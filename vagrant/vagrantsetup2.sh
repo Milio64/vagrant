@@ -22,9 +22,13 @@ hostnamectl set-hostname $HOSTNAME$domain
 
 #set "complete profile" for "root"
 cp -R -u /vagrant/root/. /root/
+##############################################################################################
+####### toevoegingen aan profile die onder git control staan lukken niet op deze manier.  ####
+####### installatie commando's opnemen hieronder in dit script.                           #### 
+##############################################################################################
 
-#message by login on VM about update procedure
-#do not overwrite $bestand OS specific settings!!
+##############################################################################################
+#message by login on VM about update procedure #Add to so i do not overwrite $bestand OS specific settings!!
 bestand=/root/.bashrc
 echo "if [ -f /vagrant/message.log ] ;"      >> $bestand
 echo "  then"                                >> $bestand
