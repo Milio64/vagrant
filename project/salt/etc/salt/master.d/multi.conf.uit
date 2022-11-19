@@ -1,0 +1,28 @@
+default_top: base
+state_top_saltenv: base
+top_file_merging_strategy: same
+env_order: ['base', 'prod', 'dev', 'admezeijl']
+
+file_roots:
+  base:
+    - /srv/salt-multi/state/base
+  prod:
+    - /srv/salt-multi/state/prod
+  dev:
+    - /srv/salt-multi/state/dev
+  admezeijl:
+    - /srv/salt-multi/state/admezeijl
+
+pillarenv_from_saltenv: True
+pillar_source_merging_strategy: smart
+#pillar_source_merging_strategy: overwrite
+
+pillar_roots:
+  base:
+    - /srv/salt-multi/pillar/base
+  prod:
+    - /srv/salt-multi/pillar/prod
+  dev:
+    - /srv/salt-multi/pillar/dev
+  admezeijl:
+    - /srv/salt-multi/pillar/admezeijl

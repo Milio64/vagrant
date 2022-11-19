@@ -7,7 +7,10 @@ echo "vagrantsetup2, started" >> /root/vagrantsetup2.started
 
 #variable init
 #source commando doesn work on Debian, this does
+[ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
+[ -f /vagrant/secret.sh ] && . /vagrant/secret.sh
 . /etc/os-release
+
 projectname=$1
 domain=$2
 
@@ -48,7 +51,7 @@ if [ -f /vagrant/vagrantsetup-$projectname.sh ] ;
     exit 0
 fi
     
-#if vagrantsetup project is not available, update system and finish 
+#if vagrantsetup-$projectname.sh is not available, update system and finish 
 case "$ID" in
     "rocky")
       sudo yum update -y
