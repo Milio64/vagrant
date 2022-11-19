@@ -7,7 +7,7 @@ master_ip=$salt
 
 #source commando doesn work on Debian, this does
 [ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
-[ -f /vagrant/secret.sh ] && . /vagrant/secret.sh
+[ -f /root/secret.sh ] && . /root/secret.sh
 . /etc/os-release
 
 echo Start initial installation steps
@@ -90,10 +90,10 @@ case $HOSTNAME in
     echo ######################################################
     echo ######################################################
     echo copy Salt master config on test systeem
-    cp -r vagrant/etc/salt/master.d/. /etc/salt/master.d
+    cp -r /vagrant/etc/. /etc
         
     echo Put token in the config file
-    sed -i 's/github_token/'$token'/g' /etc/salt/master.d/gitfs.conf
+    sed -i 's/github_token/'$github_token'/g' /etc/salt/master.d/gitfs.conf
 
     echo ######################################################
     echo ######################################################
