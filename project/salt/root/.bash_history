@@ -305,3 +305,27 @@ cd /etc/salt
 grep -v '^$\|^\s*#' master
 #1668091969
 ll
+tail -f setup.log 
+ll
+tail -f setup.log 
+systemctl restart salt-master.service 
+systemctl status salt-master.service 
+systemctl restart salt-master.service 
+systemctl status salt-master.service 
+systemctl restart salt-master.service 
+systemctl status salt-master.service 
+dnf install -y git
+systemctl restart salt-master.service 
+systemctl status salt-master.service 
+systemctl restart salt-master.service 
+systemctl status salt-master.service 
+dnf install -y mc
+systemctl restart salt-master.service 
+systemctl status salt-master.service 
+history
+salt '*' state.highstate saltenv=base
+salt-run fileserver.file_list
+salt-key
+salt-key -L
+salt-key -A
+salt-key -L

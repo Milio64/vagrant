@@ -1,107 +1,70 @@
-
 if [ -d /drives/c ]
   then
-    basedir=/drives/c/werk/github
+    basedir=/drives/c/werk/github/vagrant
   else
-    basedir=/c/werk/github
+    basedir=/c/werk/github/vagrant
 fi
 
-#set all file to linux lineend
-files=( "project/$1.sh" "project/vagrantsetup-$1.sh" "project/.bash_history-$1.sh" "vagrant/vagrantsetup1.sh" "vagrant/vagrantsetup2.sh" )
-
-for file in "${files[@]}"; do 
-  if  [ -f $basedir/vagrant/$file ]; then sed -i 's/\r$//' $basedir/vagrant/$file; fi
+#files in start/vagrant directory controleren op juiste line-end
+#########################################################################################
+for file in $basedir/start/vagrant/*; do
+    if  [ -f $file ]; then sed -i 's/\r$//' $file; fi
 done
 
-#Al gedaan hierboven....
-#sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup1.sh
-#sed -i 's/^M$//' $basedir/vagrant/vagrant/vagrantsetup2.sh
+#files in project directory controleren op juist lineend
+#########################################################################################
+for file in $basedir/start/project/$1/*; do
+    if  [ -f $file ]; then sed -i 's/\r$//' $file; fi
+done
 
 #define variable in external file
 #########################################################################################
-#########################################################################################
-if [ -f $basedir/vagrant/project/$1.sh ]
-  then
-    source $basedir/vagrant/project/$1.sh
-  else
-    echo "file '$basedir/vagrant/project/$1.sh' bestaat niet"
+if [ ! -f $basedir/start/project/$1/$1.sh ]; then
+    echo "file '$basedir/start/project/$1/$1.sh' bestaat niet"
     echo "maak deze aan en start opnieuw"
     echo "exit"
+    if [ ! -d $basedir/start/project/$1 ]; then mkdir $basedir/start/project/$1 && cd $basedir/start/project/$1; fi
     exit 1
 fi
 
+#read project variable
+source $basedir/start/project/$1/$1.sh
+
+#define projectdir
 projectdir=$basedir/$projectname
 
-
-#Bestaat project al?
-if [ -d $projectdir ] ; 
+#project dir dont exist
+if [ ! -d $projectdir ];   
   then
-    #Existing project
-    #set right so i can change files
-    chmod 777 $projectdir -R
-    ########################################################
-    #If $basedir/vagrant/projects/vagrantsetup-$projectname.sh not exist then 
-    if [ ! -f $basedir/vagrant/project/vagrantsetup-$projectname.sh ] ;
-      then 
-        echo "To kickstart your project installationmake new file: "    >> $projectdir/vagrant/message.log
-        echo "  $projectdir/vagrant/vagrantsetup-$projectname.sh "      >> $projectdir/vagrant/message.log
-        echo "or: "                                                     >> $projectdir/vagrant/message.log
-        echo "  $basedir/vagrant/project/vagrantsetup-$projectname.sh"  >> $projectdir/vagrant/message.log
-      else
-        if [ -f $projectdir/vagrant/vagrantsetup-$projectname.sh ] ;
-          then #als niet bestaat in vagrant/project directory
-            [ ! -e $basedir/vagrant/project/vagrantsetup-$projectname.sh ] && cp $projectdir/vagrant/vagrantsetup-$projectname.sh $basedir/vagrant/project/
-        fi
-    fi
-    ########################################################
-    if [ ! -f $basedir/vagrant/project/.bash_history-$projectname ] ;
-      then 
-        echo "Dont forget to update $basedir/vagrant/project/.bash_history-$projectname.sh if needed!"  >> $projectdir/vagrant/message.log
-        [ -f $projectdir/vagrant/root/.bash_history ] && cp $projectdir/vagrant/root/.bash_history $basedir/vagrant/project/.bash_history-$projectname
-    fi
-    ########################################################
-
-  else
     #New project
     ########################################################
     #Make directory's and supporting files
     mkdir $projectdir $projectdir/srv
 
-    cp $basedir/vagrant/.gitignore $projectdir/.gitignore
-    cp -r $basedir/vagrant/vagrant $projectdir/vagrant
-
-    #set right so i can change files
-    chmod 777 $projectdir -R
-
-    ########################################################
-    if [ -f $basedir/vagrant/project/vagrantsetup-$projectname.sh ] ;
-      then
-        cp $basedir/vagrant/project/vagrantsetup-$projectname.sh $projectdir/vagrant
-      else
-        echo "To kickstart your project installationmake new file: "    >> $projectdir/vagrant/message.log
-        echo "  $projectdir/vagrant/vagrantsetup-$projectname.sh "      >> $projectdir/vagrant/message.log
-        echo "or: "                                                     >> $projectdir/vagrant/message.log
-        echo "  $basedir/vagrant/project/vagrantsetup-$projectname.sh"  >> $projectdir/vagrant/message.log
-    fi
-    ########################################################
-    if [ -f $basedir/vagrant/project/.bash_history-$projectname ] ;
-      then
-        cp $basedir/vagrant/project/.bash_history-$projectname $projectdir/vagrant/root/.bash_history
-      else
-        echo "if you want history on you VM make new file: "    >> $projectdir/vagrant/message.log
-        echo "  $projectdir/vagrant/.bash_history-$projectname.sh "      >> $projectdir/vagrant/message.log
-        echo "or: "                                                      >> $projectdir/vagrant/message.log
-        echo "  $basedir/vagrant/project/.bash_histroy-$projectname.sh"  >> $projectdir/vagrant/message.log
-        echo "Dont forget to update if needed!"  >> $projectdir/vagrant/message.log
-    fi
+    cp $basedir/start/.gitignore $projectdir/.gitignore
+    #copy default settings to project
+    cp -r $basedir/start/vagrant $projectdir/vagrant
+    #copy extra settings to project
+    cp -r $basedir/start/project/$projectname/. $projectdir/vagrant
 fi
-                                                                           
+
+#set right so i can change files
+chmod 777 $projectdir -R
+
+########################################################
+if [ ! -f $basedir/vagrant/project/$projectname/vagrantsetup-$projectname.sh ] ;
+  then
+    echo "To kickstart your project installation make new file: "                >> $projectdir/vagrant/message.log
+    echo "  $basedir/vagrant/project/$projectname/vagrantsetup-$projectname.sh"  >> $projectdir/vagrant/message.log
+fi
+########################################################
+                                                                          
 
 #version control vagrantfile
-#[ -e $basedir/vagrant/vagrantfile.template$vm_number ] && echo $basedir/vagrant/vagrantfile.template$vm_number not defined. Exit ; exit 1
+########################################################
 [ -e $projectdir/vagrantfile.old ] && rm $projectdir/vagrantfile.old
 [ -e $projectdir/vagrantfile ]     && mv $projectdir/vagrantfile $projectdir/vagrantfile.old
-[ ! -e $projectdir/vagrantfile ]   && cp $basedir/vagrant/vagrantfile.template$vm_number $projectdir/vagrantfile
+[ ! -e $projectdir/vagrantfile ]   && cp $basedir/start/vagrantfile.template$vm_number $projectdir/vagrantfile
 
 #Virtualization host dependent variable.
 #########################################################################################
@@ -173,6 +136,6 @@ if [ "$pwd" = "$projectdir" ] ;
     cd $projectdir
     echo "cd $projectdir"
     echo "'vagrant box update' to update environment"
-    echo "'vagrant up' to start the test environment"
+    echo "'vagrant up' to start the $projectname environment"
 fi
 

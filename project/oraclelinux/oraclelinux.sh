@@ -1,8 +1,8 @@
-projectname=salt
+projectname=oraclelinux
 vm_number=3
-vm_name=( "$projectname" "x1ltst001" "x1lsql002" )
+vm_name=( "salt" "x1ltst001" "x1lsql002" )
 #we have to escape the "/" for "sed"
-vm_type=( "generic\/rocky8" "generic\/rocky8" "generic\/opensuse15" )
+vm_type=( "generic\/oracle8" "generic\/rocky8" "generic\/opensuse15" )
 vm_cpu=( 2 1 1 )
 vm_ipnr=( 192.168.178.25 192.168.178.26 192.168.178.27 )
 vm_mem=( 2048 1024 2048 )
