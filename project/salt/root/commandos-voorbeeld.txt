@@ -18,5 +18,4 @@ salt '*' state.highstate saltenv=prod
 #https://www.shanebart.com/clone-repo-using-token/
 
 #use token on commandline
-GIT_TOKEN=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
 git clone https://$GIT_TOKEN@github.com/Milio64/git-state.git 
