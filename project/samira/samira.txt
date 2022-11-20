@@ -1,0 +1,32 @@
+Op window machine VM gedaan:
+===========================================================================
+-user aangemaakt
+-wachtwoord gemaakt voor user
+-user lid gemaakt van Administrators group
+
+-Remote desktop setting
+  AAN gezet
+
+firewall advanced settings
+  -File and Printer Sharing (Echo Request - ICMPv4-in)/private, AAN 
+  -File and Printer Sharing (Echo Request - ICMPv4-in)/Domain, AAN
+
+commando: ping 192.168.178.26
+
+webbrowser openen:
+ - settings aangepast
+ - favorietenbalk aan
+ - favotiet naar: http://192.168.178.25 gemaakt
+ 
+windows update gestart
+
+===========================================================================
+Gedaan op Host systeem:
+-Remote desktop connecion aangemaakt
+  setting controleren voor eerste connect:
+    -diskdrive aan
+    -clipboard aan
+    -dual monitor aan/uit 
+
+commando: ping 192.168.178.26
+ 
