@@ -7,6 +7,7 @@ master_ip=$salt
 
 #source commando doesn work on Debian, this does
 [ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
+[ -f /root/secret.sh ] && . /root/secret.sh
 . /etc/os-release
 
 echo Start initial installation steps
@@ -21,7 +22,7 @@ case "$ID_LIKE" in
       
     "suse opensuse")
     sudo zypper refresh
-    sydo zypper update -y
+    sudo zypper update -y
     sudo zypper install -y salt-minion
     ;;
     
@@ -41,7 +42,6 @@ sudo systemctl enable salt-minion && sudo systemctl start salt-minion
 sudo systemctl restart salt-minion
 
 #https://docs.saltproject.io/en/latest/ref/configuration/index.html
-
 case $HOSTNAME in
   "${vm_name[0]}$domain")
   case "$ID_LIKE" in
@@ -81,17 +81,26 @@ case $HOSTNAME in
     echo firewall open op de master only
     sudo firewall-cmd --permanent --zone=public --add-port=4505-4506/tcp
     sudo systemctl reload firewalld
-    
-    echo start and enable salt-master    
+
     sudo systemctl enable salt-master && sudo systemctl start salt-master
     #sudo systemctl enable salt-syndic && sudo systemctl start salt-syndic
     sudo systemctl enable salt-api && sudo systemctl start salt-api
 
-    #voorlopig multi environments config mee werken
-    #sudo cp /vagrant/etc/salt/master.d/multi.conf /etc/salt/master.d/multi.conf
-    #sudo systemctl restart salt-master.service
-  
-    echo hier nog GIT installatie in en meteen clone van repo zodat alles meteen werkt
+    echo ######################################################
+    echo ######################################################
+    echo ######################################################
+    echo copy Salt master config on test systeem
+    cp -r /vagrant/etc/. /etc
+        
+    echo Put token in the config file
+    sed -i 's/github_token/'$github_token'/g' /etc/salt/master.d/gitfs.conf
+
+    echo ######################################################
+    echo ######################################################
+    echo ######################################################
+ 
+    echo restart salt-master after config change
+    sudo systemctl restart salt-master
 
     echo "vagrantsetup-$1, done" > /root/vagrantsetup-$1.done
     rm /root/vagrantsetup-$1.started

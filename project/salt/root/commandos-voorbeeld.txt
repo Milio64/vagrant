@@ -1,0 +1,28 @@
+
+#Overzicht van SLS files die actief zijn op het systeem
+salt-run fileserver.file_list
+salt-run fileserver.file_list saltenv=main
+salt-run fileserver.file_list saltenv=prod
+salt-run fileserver.file_list saltenv=dev
+salt-run fileserver.file_list saltenv=development
+
+grep -v '^$\|^\s*#' /etc/salt/master
+
+#Highstate uitvoeren zoals gedefineerd in omgeving.
+salt '*' state.highstate saltenv=base
+salt '*' state.highstate saltenv=prod
+
+
+####################################################################################
+#Create a token op github volgens ondertaande handleiding
+#https://www.shanebart.com/clone-repo-using-token/
+
+#use token on commandline
+git clone https://$GIT_TOKEN@github.com/Milio64/git-state.git 
+
+
+Removing /var/cache/salt/master/gitfs/ff77aa54548939ad>
+~
+rm /var/cache/salt/master/gitfs/ff77aa54548939adf6578d6455a7f575f16cbe721d94c8d5d4210c21407da164/.git/update.lk 
+
+salt-run cache.clear_git_lock gitfs type=update

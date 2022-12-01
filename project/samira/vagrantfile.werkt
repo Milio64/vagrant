@@ -1,0 +1,32 @@
+#Vagrant boxes om te installeren
+#https://app.vagrantup.com/boxes/search
+
+Vagrant.configure("2") do |config|
+  config.vm.define "rocky8" do |node|
+    node.vm.box =  "generic/rocky8"
+    node.vm.hostname = "rocky8"
+    node.vm.network "public_network", bridge: "Intel(R) Ethernet Connection I217-LM", ip: "192.168.178.25"
+    node.vm.provider "virtualbox" do |vmvbox|
+      vmvbox.memory = "1024"
+      vmvbox.cpus = 2
+    end
+    config.vm.provision "shell", inline: <<-SHELL
+      #parameter bij aanroep is script dat product X installeert
+      sudo sh /vagrant/vagrantsetup1.sh samira .localdomain
+    SHELL
+  end
+
+  config.vm.define "win10" do |node|
+    node.vm.box =  "baunegaard/win10pro-da"
+    node.vm.hostname = "win10"
+    node.vm.network "public_network", bridge: "Intel(R) Ethernet Connection I217-LM", ip: "192.168.178.26"
+    node.vm.provider "virtualbox" do |vmvbox|
+      vmvbox.memory = "2048"
+      vmvbox.cpus = 2
+    end
+  end
+  #https://www.vagrantup.com/docs/synced-folders/basic_usage
+  config.vm.synced_folder "./vagrant", "/vagrant", enable: true
+end
+
+#ook op windows wordt geprobeerd om vatrantsetup1.sh uit te voeren

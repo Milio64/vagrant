@@ -5,3 +5,4 @@
 examples/
 MyVars.sh
 vagrantfile.old
+secret.sh
