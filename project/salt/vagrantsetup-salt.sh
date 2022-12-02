@@ -22,7 +22,7 @@ case "$ID_LIKE" in
       
     "suse opensuse")
     sudo zypper refresh
-    sydo zypper update -y
+    sudo zypper update -y
     sudo zypper install -y salt-minion
     ;;
     

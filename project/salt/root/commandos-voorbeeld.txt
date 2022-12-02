@@ -19,3 +19,10 @@ salt '*' state.highstate saltenv=prod
 
 #use token on commandline
 git clone https://$GIT_TOKEN@github.com/Milio64/git-state.git 
+
+
+Removing /var/cache/salt/master/gitfs/ff77aa54548939ad>
+~
+rm /var/cache/salt/master/gitfs/ff77aa54548939adf6578d6455a7f575f16cbe721d94c8d5d4210c21407da164/.git/update.lk 
+
+salt-run cache.clear_git_lock gitfs type=update
