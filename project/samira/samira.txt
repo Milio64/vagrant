@@ -29,4 +29,10 @@ Gedaan op Host systeem:
     -dual monitor aan/uit 
 
 commando: ping 192.168.178.26
+
+===========================================================================
+informatie over installatie van webserver.
+goed uitgelegd instapjes
+
+https://www.server-world.info/en/note?os=SUSE_Linux_Enterprise_15&p=httpd&f=1
  
