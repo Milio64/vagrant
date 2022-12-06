@@ -13,12 +13,6 @@ Vagrant.configure("2") do |config|
       vmvbox.memory = "vm_mem1"
       vmvbox.cpus = vm_cpu1
     end
-
-    #https://www.vagrantup.com/docs/synced-folders/basic_usage  
-    config.vm.synced_folder "./srv/", "/srv/",
-      enable: true,
-      owner: "root",
-      group: "root"
   end
 
   #https://www.vagrantup.com/docs/synced-folders/basic_usage
