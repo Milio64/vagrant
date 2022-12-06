@@ -27,6 +27,22 @@ if [ ! -f $basedir/start/project/$1/$1.sh ]; then
     exit 1
 fi
 
+#kijken of via wifi werkt of via cable
+#netsh wlan show interfaces
+#The Wireless AutoConfig Service (wlansvc) is not running.
+#feedback op mijn desktop systeem
+
+#kijken of via wifi werkt of via cable
+#netsh wlan show interfaces
+
+netsh wlan show interfaces
+echo $?
+
+#return waarde 1 geen wlan
+#return waarde 0 wel wlan
+ 
+
+
 #read project variable
 source $basedir/start/project/$1/$1.sh
 
