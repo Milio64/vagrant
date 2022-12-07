@@ -27,6 +27,7 @@ if [ ! -f $basedir/start/project/$1/$1.sh ]; then
     exit 1
 fi
 
+
 #read project variable
 source $basedir/start/project/$1/$1.sh
 
@@ -83,6 +84,20 @@ case $HOSTNAME in
     sed -i 's/networkcard/Dell Wireless 1820A 802.11ac/g' $projectdir/vagrantfile
   ;;
   Emile-Lenovo)
+      
+    #kijken of via wifi werkt of via cable
+    #netsh wlan show interfaces
+    #The Wireless AutoConfig Service (wlansvc) is not running.
+    #feedback op mijn desktop systeem
+    
+    #kijken of via wifi werkt of via cable
+    #netsh wlan show interfaces
+    
+    netsh wlan show interfaces
+    echo $?
+    #return waarde 1 geen wlan
+    #return waarde 0 wel wlan
+      
     networkcard="Realtek RTL8723BE Wireless LAN 802.11n PCI-E NIC"
     networkcard="Realtek PCIe GBE Family Controller"
     #nog check maken welke netwerk kaart actief is!

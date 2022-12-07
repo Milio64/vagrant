@@ -15,7 +15,8 @@ case $HOSTNAME in
     vm_ipnr=( 192.168.178.30 )
     vm_mem=( 2048 )
   ;;
+  Emile-Lenovo)
+  ;;
   *)
-    echo Hostname not defined, cant set the bridged networkcard automatic
   ;;
 esac

@@ -15,8 +15,9 @@ case $HOSTNAME in
     vm_ipnr=( 192.168.178.30 192.168.178.31 192.168.178.32 )
     vm_mem=( 2048 512 512 )
   ;;
+  Emile-Lenovo)
+  ;;
   *)
-    echo Hostname not defined, cant set the bridged networkcard automatic
   ;;
 esac
 #lineend_dirs= ( 'etc/salt/master.d/*'  'srv/salt/salt/multi/*' )
