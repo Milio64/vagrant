@@ -1,7 +1,10 @@
+#check environment
 if [ -d /drives/c ]
   then
+    #Mobaxterm/cygwin shell
     basedir=/drives/c/werk/github/vagrant
   else
+    #WinGit shell
     basedir=/c/werk/github/vagrant
 fi
 
@@ -23,10 +26,14 @@ if [ ! -f $basedir/start/project/$1/$1.sh ]; then
     echo "file '$basedir/start/project/$1/$1.sh' bestaat niet"
     echo "maak deze aan en start opnieuw"
     echo "exit"
-    if [ ! -d $basedir/start/project/$1 ]; then mkdir $basedir/start/project/$1 && cd $basedir/start/project/$1; fi
     exit 1
 fi
 
+#make project directory in "start project"
+if [ ! -d $basedir/start/project/$1 ]; then 
+  mkdir $basedir/start/project/$1
+  cd $basedir/start/project/$1; 
+fi
 
 #read project variable
 source $basedir/start/project/$1/$1.sh
@@ -63,9 +70,46 @@ fi
 
 #version control vagrantfile
 ########################################################
-[ -e $projectdir/vagrantfile.old ] && rm $projectdir/vagrantfile.old
-[ -e $projectdir/vagrantfile ]     && mv $projectdir/vagrantfile $projectdir/vagrantfile.old
-[ ! -e $projectdir/vagrantfile ]   && cp $basedir/start/vagrantfile.template$vm_number $projectdir/vagrantfile
+file= $projectdir/vagrantfile
+
+[ -e $file.old ] && rm $file.old
+[ -e $file ]     && mv $file $file.old
+
+#build vagrantfile
+#head
+echo '#Vagrant boxes om te installeren' >> $file
+echo '#https://app.vagrantup.com/boxes/search' >> $file
+echo '#hieruit nieuwe vagrant file bouwen win/linux verschillen met start scripts en.......' >> $file
+echo 'Vagrant.configure("2") do |config|' >> $file
+
+#body
+COUNT=${#vm_name[@]}
+for (( i=0; i<$COUNT; i++ ))
+do
+  echo '  config.vm.define "'${vm_name[$i]}'" do |node|' >> $file
+  echo '    node.vm.box =  "'${vm_box[$i]}'"' >> $file
+  echo '    node.vm.hostname = "'${vm_name[$i]}'"' >> $file
+  echo '    node.vm.network "public_network", bridge: "networkcard", ip: "'$vm_netwerk${vm_ipnr[$i]}'"' >> $file
+  #exception for Linux boxes
+  if [ "${vm_type[$i]}" = "L" ]; then
+  echo '    node.vm.provision "shell", inline: <<-SHELL' >> $file
+  echo '      #use parameter to call installscript for product X' >> $file
+  echo '      sudo sh /vagrant/vagrantsetup1.sh' $projectname $domain >> $file
+  echo '    SHELL' >> $file
+  fi
+  echo '    node.vm.provider "virtualbox" do |vmvbox|' >> $file
+  echo '      vmvbox.memory = "'${vm_mem[$i]}'"' >> $file
+  echo '      vmvbox.cpus = '${vm_cpu[$i]} >> $file
+  echo '    end' >> $file
+  echo '  end' >> $file
+  echo '  ' >> $file
+done
+
+#end vagrantfile
+echo '  ' >> $file
+echo '  #https://www.vagrantup.com/docs/synced-folders/basic_usage' >> $file
+echo '  config.vm.synced_folder "./vagrant", "/vagrant", enable: true' >> $file
+echo 'end' >> $file
 
 #Virtualization host dependent variable.
 #########################################################################################
@@ -123,24 +167,6 @@ echo "vm_number=${vm_number}"                       >> $projectdir/vagrant/MyVar
 echo "vm_name=( ${vm_name[@]} )"                    >> $projectdir/vagrant/MyVars.sh
 echo "vm_ipnr=( ${vm_ipnr[@]} )"                    >> $projectdir/vagrant/MyVars.sh
 echo "domain=$domain"                               >> $projectdir/vagrant/MyVars.sh
-
-#change keywords in vagrantfile
-declare -i i=0
-for (( x=0; x<$vm_number; x++ ))
-do
-  ((i++)) 
-  sed -i 's/vm_name'$i'/'${vm_name[$x]}'/g'            $projectdir/vagrantfile
-  sed -i 's/vm_type'$i'/'${vm_type[$x]}'/g'            $projectdir/vagrantfile
-  sed -i 's/vm_ipnr'$i'/'${vm_ipnr[$x]}'/g'            $projectdir/vagrantfile
-  sed -i 's/vm_cpu'$i'/'${vm_cpu[$x]}'/g'              $projectdir/vagrantfile
-  sed -i 's/vm_mem'$i'/'${vm_mem[$x]}'/g'              $projectdir/vagrantfile
-  
-  echo ${vm_name[$x]}=${vm_ipnr[$x]}                >> $projectdir/vagrant/MyVars.sh
-  echo ${vm_ipnr[$x]}   ${vm_name[$x]}$domain       >> $projectdir/vagrant/hosts
-done
-
-sed -i 's/projectname/'$projectname'/g'                $projectdir/vagrantfile
-sed -i 's/domain/'$domain'/g'                          $projectdir/vagrantfile
 
 pwd=$(pwd)
 if [ "$pwd" = "$projectdir" ] ;
