@@ -51,7 +51,7 @@ if [ ! -d $projectdir ];
 
     cp $basedir/start/.gitignore $projectdir/.gitignore
     #copy default settings to project
-    cp -r $basedir/start/vagrant $projectdir/vagrant
+    cp -r $basedir/start/vagrant/ $projectdir/vagrant/
     #copy extra settings to project
     cp -r $basedir/start/project/$projectname/. $projectdir/vagrant
 fi
@@ -70,7 +70,7 @@ fi
 
 #version control vagrantfile
 ########################################################
-file= $projectdir/vagrantfile
+file=$projectdir/vagrantfile
 
 [ -e $file.old ] && rm $file.old
 [ -e $file ]     && mv $file $file.old
