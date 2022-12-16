@@ -1,13 +1,8 @@
 projectname=salt
-
-projectname=salt
 vm_name=( "$projectname" "x1ltst001" "x1lsql002" )
-
 #Type box Linux/Windows
 vm_type=( "L" "L" "L" )
-#we have to escape the "/" for "sed"
 vm_box=( "generic/rocky8" "generic/rocky8" "generic/opensuse15" )
-
 vm_cpu=( 2 1 1 )
 vm_netwerk="192.168.1."
 vm_ipnr=( 25 26 27 )
