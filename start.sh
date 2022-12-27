@@ -103,6 +103,9 @@ do
   echo '    end' >> $file
   echo '  end' >> $file
   echo '  ' >> $file
+  
+  echo $vm_netwerk${vm_ipnr[$i]}   ${vm_name[$i]}$domain >> $projectdir/vagrant/hosts
+  
 done
 
 #end vagrantfile
@@ -163,8 +166,8 @@ esac
 
 #Make MyVars.sh to pass variables to VM.
 echo "projectname=${projectname}"                   >> $projectdir/vagrant/MyVars.sh
-echo "vm_number=${vm_number}"                       >> $projectdir/vagrant/MyVars.sh
 echo "vm_name=( ${vm_name[@]} )"                    >> $projectdir/vagrant/MyVars.sh
+echo "vm_netwerk=$vm_netwerk"                       >> $projectdir/vagrant/MyVars.sh
 echo "vm_ipnr=( ${vm_ipnr[@]} )"                    >> $projectdir/vagrant/MyVars.sh
 echo "domain=$domain"                               >> $projectdir/vagrant/MyVars.sh
 
