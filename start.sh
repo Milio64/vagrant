@@ -5,11 +5,8 @@ function gateway()
 	test1=$(ipconfig)
 	test2=$(grep "Default Gateway . . . . . . . . . : $1" <<< "$test1")
 	test3=${test2:39:52}
-	
-	#winping $test3
-	winping 192.168.155.1
+	winping $test3
 
-	
 	if [ $? == 0 ];then	
 			echo "Available network used in vagrantfile: "$1"X"
 		else
@@ -123,9 +120,9 @@ gateway $vm_netwerk
 COUNT=${#vm_name[@]}
 for (( i=0; i<$COUNT; i++ ))
 do
-	winping $vm_netwerk${vm_ip[$i]}
+	winping $vm_netwerk${vm_ipnr[$i]}
 	if [ $? == 0 ];then	
-		echo "VM met name: "${vm_name$[$i]}" met IP nr "$vm_netwerk${vm_ip[$i]}" is al ingebruik op netwerk!"
+		echo "VM met name: "${vm_name[$i]}" met IP nr "$vm_netwerk${vm_ipnr[$i]}" is al ingebruik op netwerk!"
 	fi
 done	
 	
@@ -180,7 +177,7 @@ echo 'end' >> $file
 #Modify the vagrantfile by replacing template keyword with values from variables
 #sed -i 's/SEARCH_REGEX/REPLACEMENT/g' INPUTFILE
 case $HOSTNAME in
-  EmileWerkkamer)
+  Emile-Werkkamer)
     networkcard="networkcard/Intel(R) Ethernet Connection I217-LM"
     #sed -i 's/networkcard/'$networkcard'/g' $projectdir/vagrantfile
     #gives error so i do it hardcoded in de case statement

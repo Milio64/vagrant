@@ -1,5 +1,5 @@
 case $HOSTNAME in
-  EmileWerkkamer)
+  Emile-Werkkamer)
 	#fixed netwerk always this network
 	vm_netwerk="192.168.178."	
   ;;
