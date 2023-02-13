@@ -8,7 +8,6 @@ vm_type=( "L" "L" "L" )
 #we have to escape the "/" for "sed"
 vm_type=( "generic\/rocky8" "generic\/debian9" "generic\/opensuse15" )
 
-vm_netwerk="192.168.178."
 vm_ipnr=( 25 26 27 )
 
 vm_cpu=( 2 1 1 )

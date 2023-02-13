@@ -1,10 +1,10 @@
 projectname=joomla
-vm_number=1
 vm_name=( "$projectname" )
-#we have to escape the "/" for "sed"
-vm_type=( "generic\/oracle8" )
-vm_cpu=( 2 1 1 )
-vm_ipnr=( 192.168.178.25 )
+#Type box Linux/Windows
+vm_type=( "L"  )
+vm_type=( "generic/oracle8" )
+vm_cpu=( 2 )
+vm_ipnr=( 25 )
 vm_mem=( 2048 )
 domain=.localdomain
 case $HOSTNAME in

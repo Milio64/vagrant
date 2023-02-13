@@ -13,29 +13,61 @@ vm_ipnr=( 25 26 27 )
 vm_mem=( 2048 1024 2048 )
 domain=.localdomain
 
+i=1
 
 
-#ping $vm_netwerk${vm_ipnr[$i]}
-SYSTEM=192.168.1.2
-			ping -c 2 $SYSTEM > /dev/null 2>&1	#Als SYSTEM niet te pingen is, dan systeem overslaan
-			rc=$?
-			if [[ $rc -eq 0 ]]; then
-        echo Ping naar $SYSTEM NIET GELUKT
-        else 
-        echo Ping naar $SYSTEM GELUKT
-      fi
-SYSTEM=192.168.1.1
-			ping -c 2 $SYSTEM > /dev/null 2>&1	#Als SYSTEM niet te pingen is, dan systeem overslaan
-			rc=$?
-			if [[ $rc -eq 0 ]]; then
-        echo Ping naar $SYSTEM NIET GELUKT
-        else 
-        echo Ping naar $SYSTEM GELUKT
-      fi
+function gateway()
+#########################################################################################
+{
+	test1=$(ipconfig)
+	test2=$(grep "Default Gateway . . . . . . . . . : $1" <<< "$test1")
+	test3=${test2:39:52}
+	winping $test3
+	
+	if [ $? == 0 ];then	
+			echo "Available network used in vagrantfile: "$1"X"
+		else
+			echo "Network '"$1"X' is niet beschikbaar!"
+			echo "pas variable 'vm_netwerk' aan in config bestand"
+            return 9
+	fi
+}
 
+function winping()
+#########################################################################################
+{
+	#$1 is IPnr waarop we ping test doen
+	##########################################
+	test=$(ping -n 1 $1) 
+	case "$test" in 
+		*"Approximate round trip times in milli-seconds"*)
+			#echo Ping naar $1 GELUKT
+			return 0
+			;;
+		*"Destination host unreachable"*)
+			#echo Ping naar $1 NIET GELUKT
+			return 1
+			;;
+		*"Request timed out"*)
+			#echo Ping naar $1 NIET GELUKT geen route naar system
+			return 9
+			;;
+	esac
+} 
 
-      
+gateway $vm_netwerk
 exit
+
+winping $vm_netwerk${vm_ipnr[$i]}
+echo retrun code $?
+winping $vm_netwerk${vm_cpu[$i]}
+echo retrun code $?
+winping 152.125.24.24
+echo retrun code $?
+
+
+exit
+
 
 file=vagrantfile
 

@@ -1,3 +1,46 @@
+
+function gateway()
+#########################################################################################
+{
+	test1=$(ipconfig)
+	test2=$(grep "Default Gateway . . . . . . . . . : $1" <<< "$test1")
+	test3=${test2:39:52}
+	
+	#winping $test3
+	winping 192.168.155.1
+
+	
+	if [ $? == 0 ];then	
+			echo "Available network used in vagrantfile: "$1"X"
+		else
+			echo "Network '"$1"X' is niet beschikbaar!"
+			echo "pas variable 'vm_netwerk' aan in config bestand"
+            return 9
+	fi
+}
+
+function winping()
+#########################################################################################
+{
+	#$1 is IPnr waarop we ping test doen
+	##########################################
+	test=$(ping -n 1 $1) 
+	case "$test" in 
+		*"Approximate round trip times in milli-seconds"*)
+			#echo Ping naar $1 GELUKT
+			return 0
+			;;
+		*"Destination host unreachable"*)
+			#echo Ping naar $1 NIET GELUKT
+			return 1
+			;;
+		*"Request timed out"*)
+			#echo Ping naar $1 NIET GELUKT geen route naar system
+			return 9
+			;;
+	esac
+} 
+
 #check environment
 if [ -d /drives/c ]
   then
@@ -38,6 +81,9 @@ fi
 #read project variable
 source $basedir/start/project/$1/$1.sh
 
+#read network variable
+source $basedir/start/project/network.sh
+
 #define projectdir
 projectdir=$basedir/$projectname
 
@@ -66,12 +112,26 @@ if [ ! -f $basedir/vagrant/project/$projectname/vagrantsetup-$projectname.sh ] ;
     echo "  $basedir/vagrant/project/$projectname/vagrantsetup-$projectname.sh"  >> $projectdir/vagrant/message.log
 fi
 ########################################################
-                                                                          
 
+#check of netwerk juist gedefineerd is in project file 
+gateway $vm_netwerk
+########################################################
+
+
+#gedefineerd IP nr in project file nog controleren of ze vrij zijn....
+#melding geven als je NIET beschikbaar zijn op het netwerk!
+COUNT=${#vm_name[@]}
+for (( i=0; i<$COUNT; i++ ))
+do
+	winping $vm_netwerk${vm_ip[$i]}
+	if [ $? == 0 ];then	
+		echo "VM met name: "${vm_name$[$i]}" met IP nr "$vm_netwerk${vm_ip[$i]}" is al ingebruik op netwerk!"
+	fi
+done	
+	
 #version control vagrantfile
 ########################################################
 file=$projectdir/vagrantfile
-
 [ -e $file.old ] && rm $file.old
 [ -e $file ]     && mv $file $file.old
 

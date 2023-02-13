@@ -1,10 +1,10 @@
 projectname=samira
-vm_number=2
 vm_name=( "rocky8" "win10" )
-#we have to escape the "/" for "sed"
-vm_type=( "generic\/rocky8" "baunegaard\/win10pro-da" )
+#Type box Linux/Windows
+vm_type=( "L" "W" )
+vm_type=( "generic/rocky8" "baunegaard/win10pro-da" )
 vm_cpu=( 2 2 )
-vm_ipnr=( 192.168.178.25 192.168.178.26)
+vm_ipnr=( 25 26)
 vm_mem=( 1024 2048)
 domain=.localdomain
 
