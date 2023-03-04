@@ -1,5 +1,5 @@
 projectname=salt
-vm_name=( "$projectname" "x1ltst001" "x1lsql002" )
+vm_name=( "salt-master2" "dltst302"  "d1lsql002" )
 #Type box Linux/Windows
 vm_type=( "L" "L" "L" )
 vm_box=( "generic/rocky8" "generic/rocky8" "generic/opensuse15" )

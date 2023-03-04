@@ -5,6 +5,8 @@ sudo [ -f /root/vagrantsetup-$1.done ] && exit 0
 #variable init
 master_ip=$salt
 
+#hostnamectl set-hostname salt-master1.vanzeijl.net
+
 #source commando doesn work on Debian, this does
 [ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
 [ -f /root/secret.sh ] && . /root/secret.sh
