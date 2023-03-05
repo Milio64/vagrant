@@ -8,7 +8,12 @@ master_ip=$salt
 #hostnamectl set-hostname salt-master1.vanzeijl.net
 
 #SSH-KEY van vagrant host kopieren
-[ -f /vagrant/host-sshkey/id-rsa ] && cp /vagrant/host-sshkey/id-rsa* /root/.ssh 
+if [ ! -e /root/.ssh/id-rsa ]; then
+  [ -e [ ! -e /vagrant/host-sshkey/id_rsa ]; then 
+    cp /vagrant/host-sshkey/id_rsa /root/.ssh
+    chmod 600 /root/.ssh/id_rsa
+  fi
+fi
 
 #source commando doesn work on Debian, this does
 [ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
