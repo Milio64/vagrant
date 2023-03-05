@@ -9,7 +9,7 @@ master_ip=$salt
 
 #SSH-KEY van vagrant host kopieren
 if [ ! -e /root/.ssh/id-rsa ]; then
-  [ -e [ ! -e /vagrant/host-sshkey/id_rsa ]; then 
+  if [ -e [ ! -e /vagrant/host-sshkey/id_rsa ]; then 
     cp /vagrant/host-sshkey/id_rsa /root/.ssh
     chmod 600 /root/.ssh/id_rsa
   fi
