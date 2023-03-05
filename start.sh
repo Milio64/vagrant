@@ -87,35 +87,33 @@ projectdir=$basedir/$projectname
 #project dir dont exist
 if [ ! -d $projectdir ];   
   then
-    #New project
+    echo New project
     ########################################################
     #Make directory's and supporting files
-    mkdir $projectdir $projectdir
+    mkdir $projectdir
 
     cp $basedir/start/.gitignore $projectdir/.gitignore
     #copy default settings to project
     cp -r $basedir/start/vagrant/ $projectdir/vagrant/
     #copy extra settings to project
     cp -r $basedir/start/project/$projectname/. $projectdir/vagrant
- fi
-
-
-#copy ssh-key from mobaxterm host to vagrant project directory.
-#DONT PUT a SSH-KEY in a GIT repo
-if [ ! -d $projectdir/vagrant/host-sshkey ];   
-  then
-    mkdir $projectdir $projectdir/vagrant/host-sshkey
-    cp ~/.ssh/id_rsa* $projectdir/vagrant/host-sshkey
-fi
+    #copy ssh-key from mobaxterm host to vagrant project directory.
+    #DONT PUT a SSH-KEY in a GIT repo
+    if [ ! -d $projectdir/vagrant/host-sshkey ];   
+      then
+        mkdir $projectdir/vagrant/host-sshkey
+        cp ~/.ssh/id_rsa* $projectdir/vagrant/host-sshkey
+    fi
+  fi
 
 #set right so i can change files
 chmod 777 $projectdir -R
 
 ########################################################
-if [ ! -f $basedir/vagrant/project/$projectname/vagrantsetup-$projectname.sh ] ;
+if [ ! -f $basedir/start/project/$projectname/vagrantsetup-$projectname.sh ] ;
   then
-    echo "To kickstart your project installation make new file: "                >> $projectdir/vagrant/message.log
-    echo "  $basedir/vagrant/project/$projectname/vagrantsetup-$projectname.sh"  >> $projectdir/vagrant/message.log
+    echo "To kickstart your project installation make new file: "              >> $projectdir/vagrant/message.log
+    echo "  $basedir/start/project/$projectname/vagrantsetup-$projectname.sh"  >> $projectdir/vagrant/message.log
 fi
 ########################################################
 
@@ -170,8 +168,8 @@ do
   echo '    end' >> $file
   echo '  end' >> $file
   echo '  ' >> $file
-  
-  echo $vm_netwerk${vm_ipnr[$i]}'   '${vm_name[$i]}$domain >> $projectdir/vagrant/hosts
+
+  echo "$vm_netwerk${vm_ipnr[$i]}     ${vm_name[$i]}$domain" >> $projectdir/vagrant/hosts
 
 done
 
@@ -224,9 +222,6 @@ case $HOSTNAME in
 esac
 #########################################################################################
 #########################################################################################
-
-#"hosts" file will be updated remove old one
-[ -f $projectdir/vagrant/hosts ] && rm $projectdir/vagrant/hosts
 
 #MyVars.sh will be updated remove old one
 [ -f $projectdir/vagrant/MyVars.sh ] && rm $projectdir/vagrant/MyVars.sh
