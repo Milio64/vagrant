@@ -143,9 +143,6 @@ file=$projectdir/vagrantfile
 
 #build vagrantfile
 #head
-echo '#!/usr/bin/env ruby' >> $file
-echo 'Encoding.default_external = Encoding.find('Windows-1250')' >> $file
-echo 'Encoding.default_internal = Encoding.find('Windows-1250')' >> $file
 echo '#Vagrant boxes om te installeren' >> $file
 echo '#https://app.vagrantup.com/boxes/search' >> $file
 echo '#hieruit nieuwe vagrant file bouwen win/linux verschillen met start scripts en.......' >> $file
