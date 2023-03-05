@@ -8,7 +8,7 @@ echo "vagrantsetup2, started" >> /root/vagrantsetup2.started
 #variable init
 #source commando doesn work on Debian, this does
 [ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
-[ -f /vagrant/secret.sh ] && . /vagrant/secret.sh
+[ -f /vagrant/secrets.sh ] && . /vagrant/secrets.sh
 . /etc/os-release
 
 projectname=$1

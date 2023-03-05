@@ -133,6 +133,7 @@ do
 	if [ $? == 0 ];then	
 		echo "VM met name: "${vm_name[$i]}" met IP nr "$vm_netwerk${vm_ipnr[$i]}" is al ingebruik op netwerk!"
 	fi
+
 done	
 	
 #version control vagrantfile
@@ -170,8 +171,8 @@ do
   echo '  end' >> $file
   echo '  ' >> $file
   
-  echo $vm_netwerk${vm_ipnr[$i]}   ${vm_name[$i]}$domain >> $projectdir/vagrant/hosts
-  
+  echo $vm_netwerk${vm_ipnr[$i]}'   '${vm_name[$i]}$domain >> $projectdir/vagrant/hosts
+
 done
 
 #end vagrantfile
