@@ -103,9 +103,6 @@ case $HOSTNAME in
     echo copy Salt master config on test systeem
     cp -r /vagrant/etc/. /etc
        
-    echo Put token in the config file
-    sed -i 's/github_token/'$github_token'/g' /etc/salt/master.d/gitfs.conf
-
     echo ######################################################
     echo ######################################################
     echo ######################################################
@@ -135,8 +132,6 @@ if [ ! -f /root/secrets.sh ]; then
   echo "#####################################"
   echo "#####################################"
 fi
-
-
 
 echo Salt minion moet herstarten ivm wijziging in config voor die beschikbaar is
 for (( i=1; i<=10; i++))
