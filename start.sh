@@ -90,13 +90,22 @@ if [ ! -d $projectdir ];
     #New project
     ########################################################
     #Make directory's and supporting files
-    mkdir $projectdir $projectdir/srv
+    mkdir $projectdir $projectdir
 
     cp $basedir/start/.gitignore $projectdir/.gitignore
     #copy default settings to project
     cp -r $basedir/start/vagrant/ $projectdir/vagrant/
     #copy extra settings to project
     cp -r $basedir/start/project/$projectname/. $projectdir/vagrant
+ fi
+
+
+#copy ssh-key from mobaxterm host to vagrant project directory.
+#DONT PUT a SSH-KEY in a GIT repo
+if [ ! -d $projectdir/vagrant/host-sshkey ];   
+  then
+    mkdir $projectdir $projectdir/vagrant/host-sshkey
+    cp ~/.ssh/id_rsa* $projectdir/vagrant/host-sshkey
 fi
 
 #set right so i can change files

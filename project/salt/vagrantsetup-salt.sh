@@ -7,6 +7,9 @@ master_ip=$salt
 
 #hostnamectl set-hostname salt-master1.vanzeijl.net
 
+#SSH-KEY van vagrant host kopieren
+[ -f /vagrant/host-sshkey/id-rsa ] && cp /vagrant/host-sshkey/id-rsa* /root/.ssh 
+
 #source commando doesn work on Debian, this does
 [ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
 [ -f /root/secret.sh ] && . /root/secret.sh
@@ -82,6 +85,7 @@ case $HOSTNAME in
   
     echo firewall open op de master only
     sudo firewall-cmd --permanent --zone=public --add-port=4505-4506/tcp
+    sudo firewall-cmd --permanent --zone=public --add-port=22/tcp
     sudo systemctl reload firewalld
 
     sudo systemctl enable salt-master && sudo systemctl start salt-master
@@ -93,7 +97,7 @@ case $HOSTNAME in
     echo ######################################################
     echo copy Salt master config on test systeem
     cp -r /vagrant/etc/. /etc
-        
+       
     echo Put token in the config file
     sed -i 's/github_token/'$github_token'/g' /etc/salt/master.d/gitfs.conf
 
@@ -117,6 +121,17 @@ esac
 
 echo "vagrantsetup-$1, done" > /root/vagrantsetup-$1.done
 rm /root/vagrantsetup-$1.started
+
+if [ ! -f /root/secret.sh ]; then 
+  echo "#####################################"
+  echo "#####################################"
+  echo "File '/root/secret.sh' niet gevonden"
+  echo "check configuration"
+  echo "#####################################"
+  echo "#####################################"
+fi
+
+
 
 echo Salt minion moet herstarten ivm wijziging in config voor die beschikbaar is
 for (( i=1; i<=10; i++))
