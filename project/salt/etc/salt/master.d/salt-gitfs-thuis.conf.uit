@@ -1,0 +1,26 @@
+
+#GITFS werkt niet voor mij thuis
+#ivm verschillende versie van GIT en security in GIT.
+#Blijf ik tegen issue aanlopen.
+#Daarom gewoon fileroot backend gebruikt
+#en de states en pillar directory zelf regelmatig ververssen met git pull
+ 
+# Setup GIT backed fileserver with 1:1 relation of branch to Salt Environment.
+fileserver_backend:
+  - gitfs
+
+#gitfs_base: prod
+top_file_merging_strategy: same
+
+gitfs_remotes:
+  - ssh://root@192.168.178.136:/volume1/git-repos/states
+
+gitfs_user: 'root'
+
+#SSHKEY nooit opnemen in GIT repo
+#Door start.sh is sshkey gekopieerd vanaf host naar /vagrant/host-sshkey
+#Installatie script kopieer die naar /root/.ssh
+gitfs_pubkey: '/root/.ssh/id_rsa.pub'
+gitfs_privkey: '/root/.ssh/id_rsa'
+#gitfs_passphrase: ''
+
