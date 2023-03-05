@@ -17,7 +17,7 @@ fi
 
 #source commando doesn work on Debian, this does
 [ -f /vagrant/MyVars.sh ] && . /vagrant/MyVars.sh
-[ -f /root/secret.sh ] && . /root/secret.sh
+[ -f /root/secrets.sh ] && . /root/secrets.sh
 . /etc/os-release
 
 echo Start initial installation steps
@@ -127,10 +127,10 @@ esac
 echo "vagrantsetup-$1, done" > /root/vagrantsetup-$1.done
 rm /root/vagrantsetup-$1.started
 
-if [ ! -f /root/secret.sh ]; then 
+if [ ! -f /root/secrets.sh ]; then 
   echo "#####################################"
   echo "#####################################"
-  echo "File '/root/secret.sh' niet gevonden"
+  echo "File '/root/secrets.sh' niet gevonden"
   echo "check configuration"
   echo "#####################################"
   echo "#####################################"
