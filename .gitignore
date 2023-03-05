@@ -5,5 +5,5 @@
 examples/
 MyVars.sh
 vagrantfile.old
-project/*/root/secrets.sh
+project/salt/root/secrets.sh
 ./vagrant/host-sshkey/
