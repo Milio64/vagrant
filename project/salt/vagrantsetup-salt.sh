@@ -8,9 +8,10 @@ master_ip=$salt
 #hostnamectl set-hostname salt-master1.vanzeijl.net
 
 #SSH-KEY van vagrant host kopieren
+if [ ! -d /root/.ssh ]; then mkdir /root/.ssh; fi
 if [ ! -e /root/.ssh/id-rsa ]; then
-  if [ -e [ ! -e /vagrant/host-sshkey/id_rsa ]; then 
-    cp /vagrant/host-sshkey/id_rsa /root/.ssh
+  if [ -e /vagrant/host-sshkey/id_rsa ]; then 
+    cp /vagrant/host-sshkey/id_rs* /root/.ssh
     chmod 600 /root/.ssh/id_rsa
   fi
 fi
