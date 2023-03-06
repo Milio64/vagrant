@@ -2,6 +2,7 @@
 base:
   '*':
     - minion-grain
+  'salt-*':
     - gitrepo
     - salt-config
 
