@@ -138,5 +138,12 @@ echo Salt minion moet herstarten ivm wijziging in config voor die beschikbaar is
 for (( i=1; i<=10; i++))
   do
     sleep 1m && sudo systemctl restart salt-minion
+    
+    for vm in ${vm_name} ; do
+    
+     if grep -q 'Key for minion $vm$domain accepted.' /root/setup.log ; then
+      salt '$vm*' state.apply
+     fi
+    done
 done
 
