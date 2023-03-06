@@ -13,3 +13,7 @@ SALTMASTER CONFIG:
         pillar_roots:
           base:
             - {{ pillar['dir_base'] }}/pillar/base
+
+Remove setup config:
+  file.absent:
+    - name: {{ pillar['dir_config'] }}/salt-setup.conf
