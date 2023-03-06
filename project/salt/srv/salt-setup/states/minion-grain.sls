@@ -21,7 +21,7 @@ restart-the-minion:
     - mode: 775
   cmd.run:
     - require:
-      - file: restart-the-minion
+      - file: /tmp/run_command_later.py
     - order: last
     - name: "/tmp/run_command_later.py {{ delay }} systemctl restart salt-minion"
     - bg: true  {# do not wait for completion of this command #}
