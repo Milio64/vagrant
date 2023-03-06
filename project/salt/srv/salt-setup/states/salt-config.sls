@@ -8,11 +8,11 @@ SALTMASTER CONFIG:
     - contents: |
         file_roots:
           base:
-            - {{ pillar['dir_base'] }}/state/base
+            - {{ pillar['dir_base'] }}/states/base
 
         pillar_roots:
           base:
-            - {{ pillar['dir_base'] }}/pillar/base
+            - {{ pillar['dir_base'] }}/pillars/base
 
 Remove setup config:
   file.absent:
