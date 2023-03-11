@@ -243,6 +243,8 @@ if [ "$pwd" = "$projectdir" ] ;
     echo "cd $projectdir"
     echo "'vagrant box update' to update environment"
     echo "'vagrant up' to start the $projectname environment"
+    echo ""
+    echo "'vagrant box update' voor update van box op je system"
     echo "vagrant fouten soms alleen te starten vanuit een comand box not a bashshell"
 fi
 
