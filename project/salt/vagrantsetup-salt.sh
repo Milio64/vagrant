@@ -141,9 +141,9 @@ for (( i=1; i<=10; i++))
     
     for vm in ${vm_name} ; do
     
-     if grep -q 'Key for minion $vm$domain accepted.' /root/setup.log ; then
-      salt '$vm*' state.apply
-     fi
+     #if grep -q 'Key for minion $vm$domain accepted.' /root/setup.log ; then
+     # salt '$vm*' state.apply
+     #fi
     done
 done
 
