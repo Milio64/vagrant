@@ -1,7 +1,10 @@
 #!/bin/sh
 
 #Idee is om na installatie van salt-minion 
-3Een SLS script te maken dat de salt master configuratie in orde maakt.
+#Een SLS script te maken dat de salt master configuratie in orde maakt.
+#https://docs.saltproject.io/en/latest/topics/tutorials/quickstart.html
+#https://github.com/saltstack/salt-bootstrap
+
 
 #if exist then exit because Virtual machine is started before, no installation steps
 sudo [ -f /root/vagrantsetup-$1.done ] && exit 0
